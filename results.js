@@ -7,8 +7,6 @@ replaces:
 	("stundensatz":"asdf")					=> ("stundensatz":"u30")
 */
 
-
-
 var results = [
 {"stundensatz":"u60","wie":"vollzeit","zeit":"10+","wo":"nw","frontend":"1","backend":"1","umgebung":"1","land":"1","euausland":"1","alter":"u50","geschlecht":"m","time":1283164623,"ip":"92.252.102.210"},
 {"stundensatz":"u60","wie":"vollzeit","zeit":"3","wo":"nw","webdesign":"1","frontend":"1","backend":"1","beratung":"1","land":"1","euausland":"1","alter":"u30","geschlecht":"m","time":1283164795,"ip":"79.205.43.141"},

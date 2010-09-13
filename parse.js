@@ -2,40 +2,42 @@ var createPies = new Class({
 	Implements: [Options, Events],
 	
 	options: {
-		data: null
+		stage: null,
+		cartHolder: new Element('div', {'class': 'chart_holder'})
 	},
 	version: '0.1',
-	data: null,
+	results: null,
 	
-	initialize: function(data, opts){
-		if (!$defined(data)) return;
+	initialize: function(defaults, results, opts){
+		if (!$defined(results)) return;
+		if (!$defined(defaults)) return;
 		
 		this.setOptions(opts);
 		
-		this.data = data;
+		this.results = results;
+		this.defaults = defaults;
 		
-		this.createPie('geschlecht');
+		
+		this.defaults.each(function(property){
+			this.createPie(property.filter, property.values, property.labels);
+		}.bind(this));
 	},
 	
-	createPie: function(prop){
-		var values = {
-			m: 0,
-			w: 0,
-			o: 0,
-			e: 0
-		};
+	createPie: function(filter, values, labels){
+		var valueArray = [];
 		
-		this.data.each(function(vote){
-			value[vote[prop]]++;
+		this.results.each(function(vote){
+			values[vote[filter]]++;
 		});
 		
-	    r("holder", 700, 700).pieChart(
-			350, 350, 200, [
-				values.m, values.w, values.o, values.e
-			],
-			['a', 'b', 'c', 'd'],
-			"#fff"
-		);
-	    
+		for (v in values){
+			valueArray.push(values[v]);
+		}
+		
+		var holder = this.options.cartHolder.clone();
+	    Raphael(holder, 700, 700)
+				.pieChart(350, 350, 200, valueArray, labels, "#fff");
+		
+		holder.inject(this.options.stage);
 	}
 });

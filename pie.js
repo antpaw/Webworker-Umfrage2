@@ -20,7 +20,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values, labels, stroke) {
                 ms = 500,
                 delta = 30,
                 bcolor = "hsb(" + start + ", 1, 1)",
-                p = sector(cx, cy, r, angle, angle + angleplus, {gradient: "90-" + bcolor + "-" + color, stroke: stroke, "stroke-width": 3}),
+                p = sector(cx, cy, r, angle, angle + angleplus, {gradient: "90-" + bcolor + "-" + color, stroke: stroke, "stroke-width": 1}),
                 txt = paper.text(cx + (r + delta + 55) * Math.cos(-popangle * rad), cy + (r + delta + 25) * Math.sin(-popangle * rad), labels[j]).attr({fill: bcolor, stroke: "none", opacity: 0, "font-family": 'Fontin-Sans, Arial', "font-size": "20px"});
             p.mouseover(function(){
                 p.animate({scale: [1.1, 1.1, cx, cy]}, ms, "elastic");
@@ -43,23 +43,3 @@ Raphael.fn.pieChart = function (cx, cy, r, values, labels, stroke) {
 	
     return chart;
 };
-
-
-/**/
-
-
-var r = Raphael.ninja();
-
-/*
-window.addEvent('domready', function(){
-    var values = [],
-        labels = [];
-
-    $$("tr").each(function(elem){
-        values.push(parseInt(elem.getElement('td').get('text'), 10));
-        labels.push(elem.getElement('th').get('text'));
-    });
-    $$("table").destroy();
-    r("holder", 700, 700).pieChart(350, 350, 200, values, labels, "#fff");
-});
-*/
