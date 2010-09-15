@@ -60,7 +60,7 @@ var createPies = new Class({
 		});
 		new Element('li', {
 			'class': 'total',
-			html: '<span class="label">Insgesammt</span>'+
+			html: '<span class="label">Insgesamt</span>'+
 				' <em class="count percent">100%</em>' +
 				' <em class="count number">' + valueTotal + '</em>'
 		}).inject(ul);

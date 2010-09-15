@@ -49,8 +49,8 @@ footer a:hover {
 	margin-top: -1px;
 	float: left;
 	border-top: 0;
-	width: 380px;
-	padding: 40px 40px;
+	width: 480px;
+	padding: 40px 0;
 	border: 1px dashed transparent;
 	margin-left: -1px;
 }
@@ -64,6 +64,7 @@ footer a:hover {
 .node h3 {
 	font-size: 26px;
 	height: 60px;
+	padding: 0 80px;
 	color: #fff;
 	text-shadow: 0 1px #000;
 	text-align: center;
@@ -72,12 +73,13 @@ footer a:hover {
 .node .results {
 	display: block;
 	list-style: none;
-	padding: 10px 10px;
+	width: 350px;
+	padding-top: 10px;
+	margin: 0 auto;
 }
 .node .results li {
 	margin: 0;
 	display: block;
-	width: 350px;
 	clear: both;
 	overflow: hidden;
 	height: 40px;
@@ -96,7 +98,7 @@ footer a:hover {
 	padding-right: 3px;
 	font-size: 23px;
 	color: #00c0f0;
-	width: 70px;
+	width: 80px;
 	text-align: right;
 	float: right;
 }
@@ -105,9 +107,8 @@ footer a:hover {
 	font-weight: bold;
 	text-transform: uppercase;
 }
-.node .results .total .percent,
 .node .results .total .label {
-	color: rgba(255, 255, 255, 0.3);
+	color: #00c0f0;
 }
 body path {
 	fill: rgba(0, 0, 0, 0.1);
@@ -120,14 +121,9 @@ body path:hover {
 	fill: rgba(255, 255, 255, 0.1);
 }
 
-.results {
-	float: left;
-}
 
 
-/*
-	Animation
-*/
+/* animation */
 .node,
 footer a,
 body path {
