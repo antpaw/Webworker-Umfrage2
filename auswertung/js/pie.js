@@ -1,4 +1,4 @@
-Raphael.fn.pieChart = function (cx, cy, r, values, labels, stroke) {
+Raphael.fn.pieChart = function (cx, cy, r, values) {
     var paper = this;
     var rad = Math.PI / 180;
     var chart = this.set();
@@ -16,20 +16,17 @@ Raphael.fn.pieChart = function (cx, cy, r, values, labels, stroke) {
             var value = values[j],
                 angleplus = 360 * value / total,
                 popangle = angle + (angleplus / 2),
-                ms = 500,
+                ms = 300,
                 delta = 30,
-                p = sector(cx, cy, r, angle, angle + angleplus),
-                txt = paper.text(cx + (r + delta + 55) * Math.cos(-popangle * rad), cy + (r + delta + 25) * Math.sin(-popangle * rad), labels[j]);
+                p = sector(cx, cy, r, angle, angle + angleplus);
+			
             p.mouseover(function(){
-                p.animate({scale: [1.1, 1.1, cx, cy]}, ms, "elastic");
-                txt.animate({opacity: 1}, ms, "elastic");
+                p.animate({scale: [1.1, 1.1, cx, cy]}, ms, "backOut");
             }).mouseout(function(){
-                p.animate({scale: [1, 1, cx, cy]}, ms, "elastic");
-                txt.animate({opacity: 0}, ms);
+                p.animate({scale: [1, 1, cx, cy]}, ms, "backIn");
             });
             angle += angleplus;
             chart.push(p);
-            chart.push(txt);
             start += .1;
         };
 	

@@ -24,6 +24,7 @@ var createPies = new Class({
 	},
 	
 	createNode: function(name, nodeData){
+		var valueTotal = 0;
 		var valueArray = [];
 		var labelArray = [];
 		var opts = nodeData.options;
@@ -42,8 +43,30 @@ var createPies = new Class({
 		}
 		
 		var holder = this.options.cartHolder.clone();
-	    this.options.canvas(holder, 400, 400)
-				.pieChart(200, 200, 100, valueArray, labelArray, "#fff");
+	    this.options.canvas(holder, 250, 250)
+				.pieChart(125, 125, 100, valueArray);
+		
+	    for (var i = 0, ii = valueArray.length; i < ii; i++) {
+	        valueTotal += valueArray[i];
+	    }
+		
+		var ul = new Element('ul', {'class': 'results'});
+		labelArray.each(function(label, i){
+			new Element('li', {
+				html: '<span class="label">' + label + '</span>'+
+					' <em class="count percent">' + parseInt(valueArray[i] / (valueTotal /100)) + '%</em>' +
+					' <em class="count number">' + valueArray[i] + '</em>'
+			}).inject(ul);
+		});
+		new Element('li', {
+			'class': 'total',
+			html: '<span class="label">Insgesammt</span>'+
+				' <em class="count percent">100%</em>' +
+				' <em class="count number">' + valueTotal + '</em>'
+		}).inject(ul);
+		
+		new Element('h3', {text: nodeData.headline}).inject(holder, 'top');
+		ul.inject(holder);
 		
 		holder.inject(this.options.stage);
 	},

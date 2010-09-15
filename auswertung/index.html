@@ -3,6 +3,7 @@
 	<head>
 		<meta charset=utf-8>
 		<title>Webworker Umfrage</title>
+		<link href='http://fonts.googleapis.com/css?family=Nobile' rel='stylesheet' type='text/css'>
 		<link type="text/css" rel="stylesheet" href="css/main.css"> 
 	</head>
 	<body>
@@ -20,10 +21,18 @@
 		<script src="js/pie.js"></script>
 		<script src="js/parse.js"></script>
 		<script>
-			new createPies(defaults, results, {
-				stage: $('stage'),
-				canvas: Raphael
-			});
+		new createPies(defaults, results, {
+			stage: $('stage'),
+			canvas: Raphael
+		});
+		new createPies(defaults, results, {
+			stage: $('stage'),
+			canvas: Raphael
+		});
+		new createPies(defaults, results, {
+			stage: $('stage'),
+			canvas: Raphael
+		});
 		</script>
 	</body>
 </html>
