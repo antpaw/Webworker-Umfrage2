@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset=utf-8>
-		<title>Webworker vote results</title>
+		<title>Webworker Umfrage</title>
 		<link type="text/css" rel="stylesheet" href="css/main.css"> 
 	</head>
 	<body>
@@ -10,11 +10,9 @@
 		<div id="stage">
 			
 		</div>
-		
 		<footer>
 			Webworker vote results build with <a href="http://raphaeljs.com/">Raphaël</a> and <a href="http://mootools.com/">MooTools</a>
 		</footer>
-		
 		<script src="js/raphael-min.js"></script>
 		<script src="js/mootools-1.2.4-core-yc.js"></script>
 		<script src="js/defaults.js"></script>
@@ -23,7 +21,8 @@
 		<script src="js/parse.js"></script>
 		<script>
 			new createPies(defaults, results, {
-				stage: $('stage')
+				stage: $('stage'),
+				canvas: Raphael
 			});
 		</script>
 	</body>

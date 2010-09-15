@@ -3,7 +3,7 @@ var createPies = new Class({
 	
 	options: {
 		stage: null,
-		cartHolder: new Element('div', {'class': 'chart_holder'})
+		cartHolder: new Element('div', {'class': 'node'})
 	},
 	version: '0.1',
 	results: null,
@@ -18,26 +18,37 @@ var createPies = new Class({
 		this.defaults = defaults;
 		
 		
-		this.defaults.each(function(property){
-			this.createPie(property.filter, property.values, property.labels);
-		}.bind(this));
+		for (property in this.defaults){
+			this.createNode(property, this.defaults[property]);
+		};
 	},
 	
-	createPie: function(filter, values, labels){
+	createNode: function(name, nodeData){
 		var valueArray = [];
+		var labelArray = [];
+		var opts = nodeData.options;
 		
 		this.results.each(function(vote){
-			values[vote[filter]]++;
+			if (opts[vote[name]].value === undefined){
+				opts[vote[name]].value = 0;
+			}
+			
+			opts[vote[name]].value++;
 		});
 		
-		for (v in values){
-			valueArray.push(values[v]);
+		for (v in opts){
+			valueArray.push(opts[v].value);
+			labelArray.push(opts[v].label);
 		}
 		
 		var holder = this.options.cartHolder.clone();
-	    Raphael(holder, 700, 700)
-				.pieChart(350, 350, 200, valueArray, labels, "#fff");
+	    this.options.canvas(holder, 400, 400)
+				.pieChart(200, 200, 100, valueArray, labelArray, "#fff");
 		
 		holder.inject(this.options.stage);
+	},
+	
+	createPieChart: function(){
+		
 	}
 });
