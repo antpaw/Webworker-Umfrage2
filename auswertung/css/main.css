@@ -38,7 +38,7 @@ footer {
 	padding: 40px;
 }
 footer a {
-	color: #fff;
+	color: #d7f9ff;
 	text-decoration: none;
 }
 footer a:hover {
@@ -65,7 +65,7 @@ footer a:hover {
 }
 .node h3 {
 	font-size: 26px;
-	height: 60px;
+	height: 30px;
 	padding: 0 80px;
 	color: #fff;
 	text-shadow: 0 1px #000;
@@ -85,10 +85,21 @@ footer a:hover {
 	clear: both;
 	overflow: hidden;
 	height: 40px;
-	border-bottom: 1px dashed #287FA5;
-	margin-bottom: 3px;
+	border-top: 1px dashed #287FA5;
+	padding: 3px 4px 0 4px;
+	cursor: pointer;
+	background: rgba(40, 127, 165, 0);
 }
-.node .results li:nth-last-child(2) {
+.node .results li:hover,
+.node .results li.hover {
+	background: rgba(40, 127, 165, 0.5);
+}
+.node .results li:first-child {
+	border: 0;
+}
+.node .results li:hover + li,
+.node .results li.hover + li,
+.node .results li:last-child {
 	border-style: solid;
 }
 .node .results li .label {
@@ -96,7 +107,6 @@ footer a:hover {
 	padding-top: 6px;
 }
 .node .results li .count {
-	font-weight: bold;
 	padding-right: 3px;
 	font-size: 23px;
 	color: #00c0f0;
@@ -105,9 +115,9 @@ footer a:hover {
 	float: right;
 }
 .node .results .total {
-	border: 0;
 	font-weight: bold;
 	text-transform: uppercase;
+	cursor: default;
 }
 .node .results .total .label {
 	color: #00c0f0;
@@ -117,7 +127,6 @@ body path {
 	stroke: #00c0f0;
 	cursor: pointer;
 }
-
 body path:hover {
 	stroke: #fff;
 	fill: rgba(255, 255, 255, 0.1);
@@ -127,10 +136,19 @@ body path:hover {
 
 /* animation */
 .node,
+.node .results li,
 footer a,
 body path {
 	-webkit-transition-duration: 0.5s;
 	-moz-transition-duration: 0.5s;
 	-o-transition-duration: 0.5s;
 	transition-duration: 0.5s;
+}
+
+.node .results li:hover,
+.node .results li.hover {
+	-webkit-transition-duration: 0.1s;
+	-moz-transition-duration: 0.1s;
+	-o-transition-duration: 0.1s;
+	transition-duration: 0.1s;
 }
