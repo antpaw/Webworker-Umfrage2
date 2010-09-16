@@ -29,6 +29,8 @@ Raphael.fn.pieChart = function (cx, cy, r, values, name) {
 		}).mouseout(function(){
 			p.animate({scale: [1, 1, cx, cy]}, ms, "backIn");
 			$(p.id.replace('_chart_', '_label_')).removeClass('hover');
+		}).click(function(){
+			console.log(p.id);
 		});
 		angle += angleplus;
 		chart.push(p);

@@ -32,35 +32,6 @@ var defaults = {
 			{ name: '10+',	label: 'Über 10 Jahre' }
 		]
 	},
-	'alter': {
-		headline: 'Alter',
-		view: 'piechart',
-		options: [
-			{ name: 0,		label: 'Keine Angabe' },
-			{ name: 'u20',	label: 'unter 20' },
-			{ name: 'u30',	label: '20 – 29' },
-			{ name: 'u40',	label: '30 – 39' },
-			{ name: 'u50',	label: '40 – 49' },
-			{ name: 'u60',	label: '50 – 59' },
-			{ name: '60',	label: 'über 60' }
-		]
-	},
-	
-	'stundensatz': {
-		headline: 'Netto-Stundensatz',
-		view: 'piechart',
-		options: [
-			{ name: 0,		label: 'Keine Angabe' },
-			{ name: 'u30',	label: 'unter 30 €' },
-			{ name: 'u40',	label: '40 – 49 €' },
-			{ name: 'u50',	label: '50 – 59 €' },
-			{ name: 'u60',	label: '60 – 69 €' },
-			{ name: 'u70',	label: '70 – 79 €' },
-			{ name: 'u80',	label: '80 – 89 €' },
-			{ name: 'u90',	label: '90 – 99 €' },
-			{ name: '100',	label: 'über 100 €' }
-		]
-	},
 	'kunden': {
 		headline: 'Kundenbereich',
 		view: 'piechart_multiple',
@@ -82,6 +53,20 @@ var defaults = {
 			{ name: 'sonstiges',	label: 'Anderes' }
 		]
 	},
+	'alter': {
+		headline: 'Alter',
+		view: 'piechart',
+		options: [
+			{ name: 0,		label: 'Keine Angabe' },
+			{ name: 'u20',	label: 'unter 20' },
+			{ name: 'u30',	label: '20 – 29' },
+			{ name: 'u40',	label: '30 – 39' },
+			{ name: 'u50',	label: '40 – 49' },
+			{ name: 'u60',	label: '50 – 59' },
+			{ name: '60',	label: 'über 60' }
+		]
+	},
+	
 	'wo': {
 		headline: 'Herkunft',
 		view: 'piechart',
@@ -106,6 +91,21 @@ var defaults = {
 	 		{ name: 'ch',	label: 'Schweiz' },
 	 		{ name: 'at',	label: 'Österreich' },
 	 		{ name: 'o', 	label: 'Anderswo' },
+		]
+	},
+	'stundensatz': {
+		headline: 'Netto-Stundensatz',
+		view: 'piechart',
+		options: [
+			{ name: 0,		label: 'Keine Angabe' },
+			{ name: 'u30',	label: 'unter 30 €' },
+			{ name: 'u40',	label: '40 – 49 €' },
+			{ name: 'u50',	label: '50 – 59 €' },
+			{ name: 'u60',	label: '60 – 69 €' },
+			{ name: 'u70',	label: '70 – 79 €' },
+			{ name: 'u80',	label: '80 – 89 €' },
+			{ name: 'u90',	label: '90 – 99 €' },
+			{ name: '100',	label: 'über 100 €' }
 		]
 	}
 };

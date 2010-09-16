@@ -35,7 +35,6 @@ var visualizeForm = new Class({
 			}
 		}
 		
-		
 		if (nodeData.view === 'piechart_multiple') {
 			this.results.each(function(vote){
 				for (i = 0; i < ii; i++) {
@@ -54,12 +53,13 @@ var visualizeForm = new Class({
 				}
 			});
 		}
+		
 		for (i = 0; i < opts.length; i++) {
 			valueArray.push(opts[i].value);
 			labelArray.push(opts[i].label);
 		}
 		
-		var holder = this.options.cartHolder.clone();
+		var holder = this.options.cartHolder.clone().addClass(nodeData.view).set('id', name);
 		this.options.canvas(holder, 250, 250)
 			.pieChart(125, 125, 100, valueArray, name);
 		

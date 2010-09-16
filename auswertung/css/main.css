@@ -34,8 +34,13 @@ h1 {
 
 footer {
 	background: rgba(0, 0, 0, 0.333);
-	text-align: right;
-	padding: 40px;
+	padding: 50px 70px 20px 50px;
+	clear: both;
+	overflow: hidden;
+}
+footer p {
+	display: block;
+	height: 30px;
 }
 footer a {
 	color: #d7f9ff;
@@ -44,6 +49,15 @@ footer a {
 footer a:hover {
 	color: #00c0f0;
 	text-decoration: underline;
+}
+footer .footnote {
+	padding-left: 40px;
+	float: left;
+	background: url(../img/footnote.png) no-repeat left -6px;
+}
+footer .copy {
+	float: right;
+	text-align: right;
 }
 
 
@@ -58,6 +72,9 @@ footer a:hover {
 }
 .node:hover {
 	border-color: #00c0f0;
+}
+.node.piechart_multiple {
+	background: url(../img/footnote.png) no-repeat 388px 43px;
 }
 .node > svg {
 	display: block;
@@ -133,6 +150,24 @@ body path:hover {
 }
 
 
+#geschlecht {}
+#wie {}
+#zeit {}
+#alter {}
+#stundensatz {}
+#kunden {}
+#arbeitsbereich {}
+#wo {
+	width: 960px;
+	padding: 40px 0;
+}
+#wo .results {
+	float: left;
+	margin-left: 65px;
+}
+#wo > svg {
+	float: right;
+}
 
 /* animation */
 .node,
