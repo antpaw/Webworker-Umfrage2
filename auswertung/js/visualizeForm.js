@@ -17,7 +17,7 @@ var visualizeForm = new Class({
 		this.results = results;
 		this.defaults = defaults;
 		
-		for (property in this.defaults){
+		for (var property in this.defaults){
 			this.createNode(property, this.defaults[property]);
 		};
 	},
@@ -60,8 +60,43 @@ var visualizeForm = new Class({
 		}
 		
 		var holder = this.options.cartHolder.clone().addClass(nodeData.view).set('id', name);
-		this.options.canvas(holder, 250, 250)
-			.pieChart(125, 125, 100, valueArray, name);
+		
+		if (nodeData.view === 'ger_map') {
+			var R = this.options.canvas(holder, 400, 400);
+			var ger = {
+				sl: R.path(getMapPaths.sl),
+				th: R.path(getMapPaths.th),
+				nw: R.path(getMapPaths.nw),
+				st: R.path(getMapPaths.st),
+				sw: R.path(getMapPaths.sw),
+				sn: R.path(getMapPaths.sn),
+				mv: R.path(getMapPaths.mv),
+				by: R.path(getMapPaths.by),
+				bw: R.path(getMapPaths.bw),
+				bb: R.path(getMapPaths.bb),
+				rp: R.path(getMapPaths.rp),
+				ni: R.path(getMapPaths.ni),
+				be: R.path(getMapPaths.be),
+				hh: R.path(getMapPaths.hh),
+				hb: R.path(getMapPaths.hb),
+				he: R.path(getMapPaths.he)
+			};
+
+			for (var state in ger) {
+				ger[state][0].onmouseover = function(){
+					console.log(state.replace('_chart_', '_label_'));
+					//.addClass('hover');
+				};
+				ger[state][0].onmouseout = function(){
+					//.removeClass('hover');
+				};
+			}
+		}
+		else {
+			this.options.canvas(holder, 250, 250)
+				.pieChart(125, 125, 100, valueArray, name);
+		}
+		
 		
 	    for (var i = 0, ii = valueArray.length; i < ii; i++) {
 	        valueTotal += valueArray[i];

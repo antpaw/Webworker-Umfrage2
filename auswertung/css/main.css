@@ -167,6 +167,7 @@ body path:hover {
 }
 #wo > svg {
 	float: right;
+	margin-top: 30px;
 }
 
 /* animation */

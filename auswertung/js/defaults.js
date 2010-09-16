@@ -69,7 +69,7 @@ var defaults = {
 	
 	'wo': {
 		headline: 'Herkunft',
-		view: 'piechart',
+		view: 'ger_map',
 		options: [
 	 		{ name: '0', 	label: 'Keine Angabe' },
 	 		{ name: 'bw',	label: 'Baden-Württemberg' },
