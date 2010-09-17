@@ -7,6 +7,7 @@ var visualizeForm = new Class({
 	},
 	version: '0.1',
 	results: null,
+	resultsLength: 0,
 	
 	initialize: function(defaults, results, opts){
 		if (!$defined(results)) return;
@@ -15,43 +16,37 @@ var visualizeForm = new Class({
 		this.setOptions(opts);
 		
 		this.results = results;
+		this.resultsLength = results.length;
 		this.defaults = defaults;
 		
 		for (var property in this.defaults){
 			this.createNode(property, this.defaults[property]);
-		};
+		}
 	},
 	
 	createNode: function(name, nodeData){
-		var valueTotal = 0;
 		var valueArray = [];
 		var labelArray = [];
 		var opts = nodeData.options;
 		var i;
 		var ii = opts.length;
+		
 		for (i = 0; i < ii; i++) {
 			if (opts[i].value === undefined) {
 				opts[i].value = 0;
 			}
 		}
 		
-		if (nodeData.view === 'piechart_multiple') {
-			this.results.each(function(vote){
-				for (i = 0; i < ii; i++) {
-					if (vote[opts[i].name] !== undefined) {
-						opts[i].value++;
-					}
+		var multiple = (nodeData.view === 'piechart_multiple');
+		for (var j = 0; j < this.resultsLength; j++){
+			for (i = 0; i < ii; i++) {
+				if (
+					(multiple && this.results[j][opts[i].name] !== undefined) ||
+					( ! multiple && opts[i].name == this.results[j][name])
+				){
+					opts[i].value++;
 				}
-			});
-		}
-		else {
-			this.results.each(function(vote){
-				for (i = 0; i < ii; i++) {
-					if (opts[i].name == vote[name]) {
-						opts[i].value++;
-					}
-				}
-			});
+			}
 		}
 		
 		for (i = 0; i < opts.length; i++) {
@@ -61,35 +56,22 @@ var visualizeForm = new Class({
 		
 		var holder = this.options.cartHolder.clone().addClass(nodeData.view).set('id', name);
 		
-		if (nodeData.view === 'ger_map') {
+		if (nodeData.view === 'piechart_map') {
 			var R = this.options.canvas(holder, 400, 400);
-			var ger = {
-				sl: R.path(getMapPaths.sl),
-				th: R.path(getMapPaths.th),
-				nw: R.path(getMapPaths.nw),
-				st: R.path(getMapPaths.st),
-				sw: R.path(getMapPaths.sw),
-				sn: R.path(getMapPaths.sn),
-				mv: R.path(getMapPaths.mv),
-				by: R.path(getMapPaths.by),
-				bw: R.path(getMapPaths.bw),
-				bb: R.path(getMapPaths.bb),
-				rp: R.path(getMapPaths.rp),
-				ni: R.path(getMapPaths.ni),
-				be: R.path(getMapPaths.be),
-				hh: R.path(getMapPaths.hh),
-				hb: R.path(getMapPaths.hb),
-				he: R.path(getMapPaths.he)
-			};
-
-			for (var state in ger) {
-				ger[state][0].onmouseover = function(){
-					console.log(state.replace('_chart_', '_label_'));
-					//.addClass('hover');
-				};
-				ger[state][0].onmouseout = function(){
-					//.removeClass('hover');
-				};
+			
+			for (i = 0; i < ii; i++) {
+				if (mapPaths[opts[i].name] === undefined) continue;
+				
+				$(R.path(mapPaths[opts[i].name])[0])
+					.set('id', name+'_chart_'+i)
+					.addEvents({
+						mouseover: function(e){
+							$(e.target.id.replace('_chart_', '_label_')).addClass('hover');
+						},
+						mouseout: function(e){
+							$(e.target.id.replace('_chart_', '_label_')).removeClass('hover');
+						}
+					});
 			}
 		}
 		else {
@@ -97,34 +79,39 @@ var visualizeForm = new Class({
 				.pieChart(125, 125, 100, valueArray, name);
 		}
 		
+		this.createList(holder, valueArray, labelArray, nodeData.headline, name)
+			.inject(this.options.stage);
+	},
+	
+	createList: function(holder, valueArray, labelArray, headline, name){
+		var valueTotal = 0;
+		var i;
+		var ii = valueArray.length;
 		
-	    for (var i = 0, ii = valueArray.length; i < ii; i++) {
+		for (i = 0; i < ii; i++) {
 	        valueTotal += valueArray[i];
 	    }
 		
 		var ul = new Element('ul', {'class': 'results'});
-		labelArray.each(function(label, i){
+		
+		for (i = 0; i < ii; i++) {
 			new Element('li', {
 				id: name+'_label_'+i,
-				html: '<span class="label">' + label + '</span>'+
-					' <em class="count percent">' + parseInt(valueArray[i] / (valueTotal /100)) + '%</em>' +
-					' <em class="count number">' + valueArray[i] + '</em>'
-			}).inject(ul)
-		});
+				html: '<span class="label">' + labelArray[i] + '</span>'+
+					'  <em class="count percent">' + parseInt(valueArray[i] / valueTotal * 100) + '%</em>'+
+					'  <em class="count number">' + valueArray[i] + '</em>'
+			}).inject(ul);
+		}
+		
 		new Element('li', {
 			'class': 'total',
 			html: '<span class="label">Insgesamt</span>'+
-				' <em class="count percent">100%</em>' +
-				' <em class="count number">' + valueTotal + '</em>'
+				'  <em class="count percent">100%</em>'+
+				'  <em class="count number">' + valueTotal + '</em>'
 		}).inject(ul);
 		
-		new Element('h3', {text: nodeData.headline}).inject(holder, 'top');
-		ul.inject(holder);
+		new Element('h3', {text: headline}).inject(holder, 'top');
 		
-		holder.inject(this.options.stage);
-	},
-	
-	createPieChart: function(){
-		
+		return holder.adopt(ul);
 	}
 });

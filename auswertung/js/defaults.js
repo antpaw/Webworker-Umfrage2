@@ -69,15 +69,12 @@ var defaults = {
 	
 	'wo': {
 		headline: 'Herkunft',
-		view: 'ger_map',
+		view: 'piechart_map',
 		options: [
 	 		{ name: '0', 	label: 'Keine Angabe' },
 	 		{ name: 'bw',	label: 'Baden-Württemberg' },
 	 		{ name: 'by',	label: 'Bayern' },
-	 		{ name: 'be',	label: 'Berlin' },
 	 		{ name: 'bb',	label: 'Brandenburg' },
-	 		{ name: 'hb',	label: 'Bremen' },
-	 		{ name: 'hh',	label: 'Hamburg' },
 	 		{ name: 'he',	label: 'Hessen' },
 	 		{ name: 'mv',	label: 'Mecklenburg-Vorp.' },
 	 		{ name: 'ni',	label: 'Niedersachsen' },
@@ -88,6 +85,9 @@ var defaults = {
 	 		{ name: 'st',	label: 'Sachsen-Anhalt' },
 	 		{ name: 'sh',	label: 'Schleswig-Holstein' },
 	 		{ name: 'th',	label: 'Thüringen' },
+	 		{ name: 'be',	label: 'Berlin' },
+	 		{ name: 'hb',	label: 'Bremen' },
+	 		{ name: 'hh',	label: 'Hamburg' },
 	 		{ name: 'ch',	label: 'Schweiz' },
 	 		{ name: 'at',	label: 'Österreich' },
 	 		{ name: 'o', 	label: 'Anderswo' },
@@ -95,7 +95,7 @@ var defaults = {
 	},
 	'stundensatz': {
 		headline: 'Netto-Stundensatz',
-		view: 'piechart',
+		view: 'analytics',
 		options: [
 			{ name: 0,		label: 'Keine Angabe' },
 			{ name: 'u30',	label: 'unter 30 €' },

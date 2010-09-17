@@ -114,6 +114,10 @@ footer .copy {
 .node .results li:first-child {
 	border: 0;
 }
+.node .results li.total:hover {
+	background: rgba(255, 255, 255, 0.1);
+}
+.node .results li:hover,
 .node .results li:hover + li,
 .node .results li.hover + li,
 .node .results li:last-child {
@@ -162,8 +166,18 @@ body path:hover {
 	padding: 40px 0;
 }
 #wo .results {
+	font-size: 13px;
 	float: left;
 	margin-left: 65px;
+}
+#wo .results li {
+	height: 29px;
+}
+#wo .results li .label {
+	padding-top: 3px;
+}
+#wo .results li em {
+	font-size: 16px;
 }
 #wo > svg {
 	float: right;
