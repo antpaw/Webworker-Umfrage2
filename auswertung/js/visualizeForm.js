@@ -40,12 +40,10 @@ var visualizeForm = new Class({
 		var multiple = (nodeData.view === 'piechart_multiple');
 		for (var j = 0; j < this.resultsLength; j++){
 			for (i = 0; i < ii; i++) {
-				if (
-					(multiple && this.results[j][opts[i].name] !== undefined) ||
-					( ! multiple && opts[i].name == this.results[j][name])
-				){
-					opts[i].value++;
-				}
+				if (multiple && this.results[j][opts[i].name] === undefined) continue;
+				if ( ! multiple && opts[i].name !== this.results[j][name]) continue;
+				
+				opts[i].value++;
 			}
 		}
 		
