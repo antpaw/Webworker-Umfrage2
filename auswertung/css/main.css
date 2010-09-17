@@ -161,9 +161,13 @@ body path:hover {
 #stundensatz {}
 #kunden {}
 #arbeitsbereich {}
+#stundensatz,
 #wo {
 	width: 960px;
 	padding: 40px 0;
+}
+#stundensatz .results {
+	width: 600px;
 }
 #wo .results {
 	font-size: 13px;
