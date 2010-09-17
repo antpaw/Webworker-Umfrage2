@@ -13,7 +13,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values, name) {
 	var angle = 0;
 	var total = 0;
 	var start = 0;
-    var process = function (j) {
+    var process = function(j){
 		var value = values[j],
 			angleplus = 360 * value / total,
 			popangle = angle + (angleplus / 2),
@@ -21,14 +21,14 @@ Raphael.fn.pieChart = function (cx, cy, r, values, name) {
 			delta = 30,
 			p = sector(cx, cy, r, angle, angle + angleplus);
 			
-		p.id = name+'_chart_'+j;
+		p.node.id = name+'_chart_'+j;
 			
 		p.mouseover(function(){
 			p.animate({scale: [1.1, 1.1, cx, cy]}, ms, "backOut");
-			$(p.id.replace('_chart_', '_label_')).addClass('hover');
+			$(p.node.id.replace('_chart_', '_label_')).addClass('hover');
 		}).mouseout(function(){
 			p.animate({scale: [1, 1, cx, cy]}, ms, "backIn");
-			$(p.id.replace('_chart_', '_label_')).removeClass('hover');
+			$(p.node.id.replace('_chart_', '_label_')).removeClass('hover');
 		}).click(function(){
 			console.log(p.id);
 		});
@@ -36,7 +36,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values, name) {
 		chart.push(p);
 		start += .1;
 	};
-	var i;
+	var i, ii;
 	
 	for (i = 0, ii = values.length; i < ii; i++) {
 		total += values[i];
