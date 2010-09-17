@@ -57,12 +57,12 @@ var visualizeForm = new Class({
 		var holder = this.options.cartHolder.clone().addClass(nodeData.view).set('id', name);
 		
 		if (nodeData.view === 'piechart_map') {
-			var R = this.options.canvas(holder, 400, 400);
+			var R = this.options.canvas(holder, 450, 700);
 			
 			for (i = 0; i < ii; i++) {
 				if (mapPaths[opts[i].name] === undefined) continue;
 				
-				$(R.path(mapPaths[opts[i].name])[0])
+				$(R.path(mapPaths[opts[i].name]).scale(1.5, 1.5, 0, 0)[0])
 					.set('id', name+'_chart_'+i)
 					.addEvents({
 						mouseover: function(e){
@@ -100,7 +100,25 @@ var visualizeForm = new Class({
 				html: '<span class="label">' + labelArray[i] + '</span>'+
 					'  <em class="count percent">' + parseInt(valueArray[i] / valueTotal * 100) + '%</em>'+
 					'  <em class="count number">' + valueArray[i] + '</em>'
-			}).inject(ul);
+			})
+			
+			.addEvents({
+				mouseenter: function(e){
+					var elem = e.target;
+					if (elem.id === ''){
+						elem = elem.getParent('li');
+					}
+					document.getElementById(elem.id.replace('_label_', '_chart_')).setAttribute('class', 'hover');
+				},
+				mouseleave: function(e){
+					var elem = e.target;
+					if (elem.id === ''){
+						elem = elem.getParent('li');
+					}
+					document.getElementById(elem.id.replace('_label_', '_chart_')).removeAttribute('class');
+				}
+			})
+			.inject(ul);
 		}
 		
 		new Element('li', {

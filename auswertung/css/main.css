@@ -128,12 +128,12 @@ footer .copy {
 	padding-top: 6px;
 }
 .node .results li .count {
+	float: right;
 	padding-right: 3px;
 	font-size: 23px;
 	color: #00c0f0;
 	width: 80px;
 	text-align: right;
-	float: right;
 }
 .node .results .total {
 	font-weight: bold;
@@ -148,6 +148,7 @@ body path {
 	stroke: #00c0f0;
 	cursor: pointer;
 }
+body path.hover,
 body path:hover {
 	stroke: #fff;
 	fill: rgba(255, 255, 255, 0.1);
