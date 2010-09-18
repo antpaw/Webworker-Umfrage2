@@ -78,6 +78,8 @@ var visualizeForm = new Class({
 			 
 			var width = 780,
 				height = 250,
+				vertCells = 5,
+				horzCells = labelArray.length-1,
 				leftgutter = 0,
 				bottomgutter = 50,
 				topgutter = 20,
@@ -85,13 +87,13 @@ var visualizeForm = new Class({
 				X = (width - leftgutter) / labelArray.length,
 				max = Math.max.apply(Math, valueArray),
 				Y = (height - bottomgutter - topgutter) / max;
-			
+
 			r.drawGrid(
 				leftgutter + X * .5,
-				topgutter + .5-20,
+				topgutter,
 				width - leftgutter - X,
-				height - topgutter - bottomgutter+20,
-				8, 10
+				height - topgutter - bottomgutter,
+				horzCells, vertCells
 			);
 			
 			var p,
@@ -103,8 +105,8 @@ var visualizeForm = new Class({
 			for (i = 0, ii = labelArray.length; i < ii; i++) {
 				var y = Math.round(height - bottomgutter - Y * valueArray[i]),
 					x = Math.round(leftgutter + X * (i + .5)),
-					labelTextBottom;
-				if (!i) {
+					labelTextLeft;
+				if (i === 0) {
 					p = ["M", x, y, "C", x, y];
 				}
 				if (i && i < ii - 1) {
@@ -115,11 +117,17 @@ var visualizeForm = new Class({
 					var a = getAnchors(X0, Y0, x, y, X2, Y2);
 					p = p.concat([a.x1, a.y1, x, y, a.x2, a.y2]);
 				}
+				
+				var euro = parseInt(labelArray[i].split('–')[0].replace(/[^0-9\.]+/, ''));
+				labelTextBottom = r.text(x, height-20, (euro ? euro+' €' : 'kA'));
+				labelTextBottom.node.setAttribute('class', 'text down');
+				labelTextBottom.node.id = name+'_text_'+i;
+				
 				var dot = r.circle(x, y, 4);
 				dot.node.setAttribute('class', 'dot');
 				dot.node.id = name+'_chart_'+i;
 				
-				blanket.push(r.rect(leftgutter + X * i, 0, X, height - bottomgutter).attr({fill: "#0000ff", opacity: 0}));
+				blanket.push(r.rect(leftgutter + X * i, 0, X, height).attr({fill: "#0000ff", opacity: 0}));
 				var rect = blanket[blanket.length - 1];
 				
 				rect.node.id = name+'_area_'+i;
@@ -129,15 +137,24 @@ var visualizeForm = new Class({
 						mouseover: function(e){
 							$(e.target.id.replace('_area_', '_chart_')).setAttribute('class', 'dot hover');
 							$(e.target.id.replace('_area_', '_label_')).addClass('hover');
+							$(e.target.id.replace('_area_', '_text_')).setAttribute('class', 'text down hover');
 						},
 						mouseout: function(e){
 							$(e.target.id.replace('_area_', '_chart_')).setAttribute('class', 'dot');
 							$(e.target.id.replace('_area_', '_label_')).removeClass('hover');
+							$(e.target.id.replace('_area_', '_text_')).setAttribute('class', 'text down');
 						}
 					});
-					
-				labelTextBottom = r.text(x, height-20, labelArray[i]);
-				labelTextBottom.node.setAttribute('class', 'text down');
+				
+			}
+			
+			var cellHeight = (height - bottomgutter -topgutter ) / vertCells;
+			var girdValue = max / vertCells;
+			
+			var labelTextBottom;
+			for (i = 0; i <= vertCells; i++) {
+				labelTextBottom = r.text(leftgutter+25, height-bottomgutter-i*cellHeight+5, Math.ceil(girdValue *i));
+				labelTextBottom.node.setAttribute('class', 'text left');
 			}
 			
 			path.attr({path: p.concat([x, y, x, y])});

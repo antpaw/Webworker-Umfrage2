@@ -155,16 +155,11 @@ body path:hover {
 	fill: #fff;
 }
 body text {
+	fill: #00c0f0;
+}
+body text.hover {
 	fill: #d7f9ff;
 }
-
-#geschlecht {}
-#wie {}
-#zeit {}
-#alter {}
-#stundensatz {}
-#kunden {}
-#arbeitsbereich {}
 
 .label {
 	fill: #000;
@@ -178,6 +173,9 @@ body text {
 .grid:hover {
 	fill: #000;
 	stroke: #00c0f0;
+}
+.text.left tspan {
+	text-anchor: end;
 }
 .text tspan {
 	font: normal normal normal 16px/1.5 'Nobile','Helvetica Neue',Helvetica,Arial,'Liberation Sans',FreeSans,sans-serif;
@@ -223,20 +221,28 @@ body text {
 	float: right;
 	margin-top: 30px;
 }
+#geschlecht {}
+#wie {}
+#zeit {}
+#alter {}
+#stundensatz {}
+#kunden {}
+#arbeitsbereich {}
 
 /* animation */
 .node,
 .node .results li,
 footer a,
-body path,
-body .dot {
+path,
+.dot,
+text {
 	-webkit-transition-duration: 0.5s;
 	-moz-transition-duration: 0.5s;
 	-o-transition-duration: 0.5s;
 	transition-duration: 0.5s;
 }
-body path:hover,
-body path.hover,
+path:hover,
+path.hover,
 .node .results li:hover,
 .node .results li.hover {
 	-webkit-transition-duration: 0.1s;
