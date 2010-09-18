@@ -194,40 +194,52 @@ body text.hover {
 	stroke: #d7f9ff;
 	stroke-width: 10;
 }
-#stundensatz,
-#wo {
-	width: 960px;
-	padding: 40px 0;
-}
-#stundensatz .results {
-	width: 600px;
-}
-#wo .results {
+
+
+.results.small {
 	font-size: 13px;
 	float: left;
 	margin-left: 65px;
 }
-#wo .results li {
+.results.small li {
 	height: 29px;
 }
-#wo .results li .label {
+.results.small li .label {
 	padding-top: 3px;
 }
-#wo .results li .count {
+.results.small li .count {
 	font-size: 16px;
 	width: 60px;
+}
+
+
+#stundensatz,
+#wo {
+	width: 960px;
+	padding: 40px 1px 40px 0;
+}
+#stundensatz .results {
+	width: 600px;
 }
 #wo > svg {
 	float: right;
 	margin-top: 30px;
 }
+#wo h3 {
+	padding-bottom:42px;
+}
+#alter {
+	padding-bottom: 128px;
+}
+#arbeitsbereich {
+	position: absolute;
+	top: 1446px;
+}
 #geschlecht {}
 #wie {}
 #zeit {}
-#alter {}
 #stundensatz {}
 #kunden {}
-#arbeitsbereich {}
 
 /* animation */
 .node,

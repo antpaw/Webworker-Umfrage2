@@ -160,15 +160,25 @@ var visualizeForm = new Class({
 			path.attr({path: p.concat([x, y, x, y])});
 		}
 		else {
-			this.options.canvas(holder, 250, 250)
-				.pieChart(125, 125, 100, valueArray, name);
+			var canvasSize, pieSize, radius;
+			
+			canvasSize = 250;
+			radius = 100;
+			if (nodeData.small){
+				canvasSize = 130;
+				radius /= 2;
+			}
+			pieSize = canvasSize/2;
+			
+			this.options.canvas(holder, canvasSize, canvasSize)
+				.pieChart(pieSize, pieSize, radius, valueArray, name);
 		}
 		
-		this.createList(holder, valueArray, labelArray, nodeData.headline, name)
+		this.createList(holder, valueArray, labelArray, nodeData, name)
 			.inject(this.options.stage);
 	},
 	
-	createList: function(holder, valueArray, labelArray, headline, name){
+	createList: function(holder, valueArray, labelArray, nodeData, name){
 		var valueTotal = 0;
 		var i;
 		var ii = valueArray.length;
@@ -177,7 +187,7 @@ var visualizeForm = new Class({
 			valueTotal += valueArray[i];
 		}
 		
-		var ul = new Element('ul', {'class': 'results'});
+		var ul = new Element('ul', {'class': 'results'+(nodeData.small ? ' small' : '')});
 		
 		for (i = 0; i < ii; i++) {
 			new Element('li', {
@@ -218,7 +228,7 @@ var visualizeForm = new Class({
 				'  <em class="count number">' + valueTotal + '</em>'
 		}).inject(ul);
 		
-		new Element('h3', {text: headline}).inject(holder, 'top');
+		new Element('h3', {text: nodeData.headline}).inject(holder, 'top');
 		
 		return holder.adopt(ul);
 	}
