@@ -144,16 +144,19 @@ footer .copy {
 	color: #00c0f0;
 }
 body path {
-	fill: rgba(0, 0, 0, 0.1);
+	fill: #000;
+	fill-opacity: 0.1;
 	stroke: #00c0f0;
 	cursor: pointer;
 }
 body path.hover,
 body path:hover {
 	stroke: #fff;
-	fill: rgba(255, 255, 255, 0.1);
+	fill: #fff;
 }
-
+body text {
+	fill: #d7f9ff;
+}
 
 #geschlecht {}
 #wie {}
@@ -162,6 +165,37 @@ body path:hover {
 #stundensatz {}
 #kunden {}
 #arbeitsbereich {}
+
+.label {
+	fill: #000;
+	fill-opacity: 0.8;
+	stroke-width: 2;
+}
+.grid {
+	stroke-opacity: 0.4;
+	stroke-width: 1;
+}
+.grid:hover {
+	fill: #000;
+	stroke: #00c0f0;
+}
+.text tspan {
+	font: normal normal normal 16px/1.5 'Nobile','Helvetica Neue',Helvetica,Arial,'Liberation Sans',FreeSans,sans-serif;
+}
+.line {
+	fill-opacity: 0;
+	stroke-width: 4;
+	stroke-linejoin: round;
+}
+.dot {
+	fill: #000;
+	stroke: #6868FF;
+	stroke-width: 2;
+}
+.dot.hover {
+	stroke: #d7f9ff;
+	stroke-width: 10;
+}
 #stundensatz,
 #wo {
 	width: 960px;
@@ -181,8 +215,9 @@ body path:hover {
 #wo .results li .label {
 	padding-top: 3px;
 }
-#wo .results li em {
+#wo .results li .count {
 	font-size: 16px;
+	width: 60px;
 }
 #wo > svg {
 	float: right;
@@ -193,13 +228,15 @@ body path:hover {
 .node,
 .node .results li,
 footer a,
-body path {
+body path,
+body .dot {
 	-webkit-transition-duration: 0.5s;
 	-moz-transition-duration: 0.5s;
 	-o-transition-duration: 0.5s;
 	transition-duration: 0.5s;
 }
-
+body path:hover,
+body path.hover,
 .node .results li:hover,
 .node .results li.hover {
 	-webkit-transition-duration: 0.1s;

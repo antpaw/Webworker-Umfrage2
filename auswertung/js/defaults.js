@@ -76,7 +76,7 @@ var defaults = {
 	 		{ name: 'by',	label: 'Bayern' },
 	 		{ name: 'bb',	label: 'Brandenburg' },
 	 		{ name: 'he',	label: 'Hessen' },
-	 		{ name: 'mv',	label: 'Mecklenburg-Vorp.' },
+	 		{ name: 'mv',	label: 'Mecklenburg-Vorpommern' },
 	 		{ name: 'ni',	label: 'Niedersachsen' },
 	 		{ name: 'nw',	label: 'Nordrhein-Westfalen' },
 	 		{ name: 'rp',	label: 'Rheinland-Pfalz' },
@@ -97,15 +97,15 @@ var defaults = {
 		headline: 'Netto-Stundensatz',
 		view: 'analytics',
 		options: [
-			{ name: 0,		label: 'Keine Angabe' },
-			{ name: 'u30',	label: 'unter 30 €' },
-			{ name: 'u40',	label: '40 – 49 €' },
-			{ name: 'u50',	label: '50 – 59 €' },
-			{ name: 'u60',	label: '60 – 69 €' },
-			{ name: 'u70',	label: '70 – 79 €' },
-			{ name: 'u80',	label: '80 – 89 €' },
-			{ name: 'u90',	label: '90 – 99 €' },
-			{ name: '100',	label: 'über 100 €' }
+			{ name: 0,		label: 'kA' },
+			{ name: 'u30',	label: '30 €' },
+			{ name: 'u40',	label: '40 €' },
+			{ name: 'u50',	label: '50 €' },
+			{ name: 'u60',	label: '60 €' },
+			{ name: 'u70',	label: '70 €' },
+			{ name: 'u80',	label: '80 €' },
+			{ name: 'u90',	label: '90 €' },
+			{ name: '100',	label: '100 €' }
 		]
 	}
 };
