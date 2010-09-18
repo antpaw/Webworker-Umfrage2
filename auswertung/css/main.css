@@ -10,6 +10,7 @@ html {
 	color: #d7f9ff;
 	padding-top: 40px;
 	text-shadow: 0px 1px #020735;
+	min-width: 963px;
 }
 a {
 	color: #00c0f0;
@@ -18,16 +19,18 @@ a {
 h1 {
 	text-indent: -9999px;
 	display: block;
-	margin-left: 40px;
+	margin-left: 80px;
 	width: 880px;
 	height: 120px;
 	background: url(../img/logo.png) no-repeat;
 }
 
-#stage {
+#stage_holder {
 	background: rgba(0, 0, 0, 0.333) url(../img/world2.png) no-repeat 130px -150px fixed;
 	border-top: 1px solid #00c0f0;
-	min-height: 750px;
+}
+#stage {
+	max-width: 1600px;
 	clear: both;
 	overflow: hidden;
 }
@@ -235,6 +238,16 @@ body text.hover {
 	position: absolute;
 	top: 1446px;
 }
+
+@media screen and (max-width: 1457px) {
+	#arbeitsbereich {
+		left: 481px;
+	}
+	#alter {
+		padding-bottom: 201px;
+	}
+}
+
 #geschlecht {}
 #wie {}
 #zeit {}
