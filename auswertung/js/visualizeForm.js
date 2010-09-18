@@ -20,13 +20,14 @@ var visualizeForm = new Class({
 		this.defaults = defaults;
 		
 		for (var property in this.defaults){
-			this.createNode(property, this.defaults[property]);
+			this.defaults[property].name = property;
+			this.createNode(this.defaults[property]).inject(this.options.stage);
 		}
 	},
 	
-	createNode: function(name, nodeData){
-		var valueArray = [];
-		var labelArray = [];
+	createNode: function(nodeData){
+		var values = [];
+		var labels = [];
 		var opts = nodeData.options;
 		var i;
 		var ii = opts.length;
@@ -41,27 +42,34 @@ var visualizeForm = new Class({
 		for (var j = 0; j < this.resultsLength; j++){
 			for (i = 0; i < ii; i++) {
 				if (multiple && this.results[j][opts[i].name] === undefined) continue;
-				if ( ! multiple && opts[i].name !== this.results[j][name]) continue;
-				
+				if ( ! multiple && opts[i].name !== this.results[j][nodeData.name]) continue;
 				opts[i].value++;
 			}
 		}
 		
 		for (i = 0; i < opts.length; i++) {
-			valueArray.push(opts[i].value);
-			labelArray.push(opts[i].label);
+			values.push(opts[i].value);
+			labels.push(opts[i].label);
 		}
 		
-		var holder = this.options.cartHolder.clone().addClass(nodeData.view).set('id', name);
+		var holder = this.options.cartHolder.clone().addClass(nodeData.view).set('id', nodeData.name);
 		
+		this.createChart(holder, values, labels, nodeData);
+		this.createList(holder, values, labels, nodeData);
+		
+		return holder;
+	},
+	
+	createChart: function(holder, values, labels, nodeData){
+		var i, ii;
 		if (nodeData.view === 'piechart_map') {
 			var R = this.options.canvas(holder, 450, 700);
 			
+			ii = nodeData.options.length;
 			for (i = 0; i < ii; i++) {
-				if (mapPaths[opts[i].name] === undefined) continue;
-				
-				$(R.path(mapPaths[opts[i].name]).scale(1.5, 1.5, 0, 0)[0])
-					.set('id', name+'_chart_'+i)
+				if (mapPaths[nodeData.options[i].name] === undefined) continue;
+				$(R.path(mapPaths[nodeData.options[i].name]).scale(1.5, 1.5, 0, 0)[0])
+					.set('id', nodeData.name+'_chart_'+i)
 					.addEvents({
 						mouseover: function(e){
 							$(e.target.id.replace('_chart_', '_label_')).addClass('hover');
@@ -77,13 +85,13 @@ var visualizeForm = new Class({
 			var width = 780,
 				height = 250,
 				vertCells = 5,
-				horzCells = labelArray.length-1,
+				horzCells = labels.length-1,
 				leftgutter = 0,
 				bottomgutter = 50,
 				topgutter = 20,
 				r = this.options.canvas(holder, width, height),
-				X = (width - leftgutter) / labelArray.length,
-				max = Math.max.apply(Math, valueArray),
+				X = (width - leftgutter) / labels.length,
+				max = Math.max.apply(Math, values),
 				Y = (height - bottomgutter - topgutter) / max;
 
 			r.drawGrid(
@@ -100,35 +108,35 @@ var visualizeForm = new Class({
 			
 			path.node.setAttribute('class', 'line');
 			
-			for (i = 0, ii = labelArray.length; i < ii; i++) {
-				var y = Math.round(height - bottomgutter - Y * valueArray[i]),
+			for (i = 0, ii = labels.length; i < ii; i++) {
+				var y = Math.round(height - bottomgutter - Y * values[i]),
 					x = Math.round(leftgutter + X * (i + .5)),
 					labelTextLeft;
 				if (i === 0) {
 					p = ["M", x, y, "C", x, y];
 				}
 				if (i && i < ii - 1) {
-					var Y0 = Math.round(height - bottomgutter - Y * valueArray[i - 1]),
+					var Y0 = Math.round(height - bottomgutter - Y * values[i - 1]),
 						X0 = Math.round(leftgutter + X * (i - .5)),
-						Y2 = Math.round(height - bottomgutter - Y * valueArray[i + 1]),
+						Y2 = Math.round(height - bottomgutter - Y * values[i + 1]),
 						X2 = Math.round(leftgutter + X * (i + 1.5));
 					var a = getAnchors(X0, Y0, x, y, X2, Y2);
 					p = p.concat([a.x1, a.y1, x, y, a.x2, a.y2]);
 				}
 				
-				var euro = parseInt(labelArray[i].split('–')[0].replace(/[^0-9\.]+/, ''));
+				var euro = parseInt(labels[i].split('–')[0].replace(/[^0-9\.]+/, ''));
 				labelTextBottom = r.text(x, height-20, (euro ? euro+' €' : 'kA'));
 				labelTextBottom.node.setAttribute('class', 'text down');
-				labelTextBottom.node.id = name+'_text_'+i;
+				labelTextBottom.node.id = nodeData.name+'_text_'+i;
 				
 				var dot = r.circle(x, y, 4);
 				dot.node.setAttribute('class', 'dot');
-				dot.node.id = name+'_chart_'+i;
+				dot.node.id = nodeData.name+'_chart_'+i;
 				
 				blanket.push(r.rect(leftgutter + X * i, 0, X, height).attr({fill: "#0000ff", opacity: 0}));
 				var rect = blanket[blanket.length - 1];
 				
-				rect.node.id = name+'_area_'+i;
+				rect.node.id = nodeData.name+'_area_'+i;
 				
 				$(rect.node)
 					.addEvents({
@@ -169,30 +177,27 @@ var visualizeForm = new Class({
 			pieSize = canvasSize/2;
 			
 			this.options.canvas(holder, canvasSize, canvasSize)
-				.pieChart(pieSize, pieSize, radius, valueArray, name);
+				.pieChart(pieSize, pieSize, radius, values, nodeData.name);
 		}
-		
-		this.createList(holder, valueArray, labelArray, nodeData, name)
-			.inject(this.options.stage);
 	},
 	
-	createList: function(holder, valueArray, labelArray, nodeData, name){
+	createList: function(holder, values, labels, nodeData){
 		var valueTotal = 0;
 		var i;
-		var ii = valueArray.length;
+		var ii = values.length;
 		
 		for (i = 0; i < ii; i++) {
-			valueTotal += valueArray[i];
+			valueTotal += values[i];
 		}
 		
 		var ul = new Element('ul', {'class': 'results'+(nodeData.small ? ' small' : '')});
 		
 		for (i = 0; i < ii; i++) {
 			new Element('li', {
-				id: name+'_label_'+i,
-				html: '<span class="label">' + labelArray[i] + '</span>'+
-					'  <em class="count percent">' + parseInt(valueArray[i] / valueTotal * 100) + '%</em>'+
-					'  <em class="count number">' + valueArray[i] + '</em>'
+				id: nodeData.name+'_label_'+i,
+				html: '<span class="label">' + labels[i] + '</span>'+
+					'  <em class="count percent">' + parseInt(values[i] / valueTotal * 100) + '%</em>'+
+					'  <em class="count number">' + values[i] + '</em>'
 			})
 			.addEvents({
 				mouseenter: function(e){
@@ -228,6 +233,6 @@ var visualizeForm = new Class({
 		
 		new Element('h3', {text: nodeData.headline}).inject(holder, 'top');
 		
-		return holder.adopt(ul);
+		holder.adopt(ul);
 	}
 });
