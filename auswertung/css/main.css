@@ -10,6 +10,7 @@ html {
 	color: #d7f9ff;
 	padding-top: 40px;
 	text-shadow: 0px 1px #020735;
+	min-width: 963px;
 }
 a {
 	color: #00c0f0;
@@ -18,16 +19,18 @@ a {
 h1 {
 	text-indent: -9999px;
 	display: block;
-	margin-left: 40px;
+	margin-left: 80px;
 	width: 880px;
 	height: 120px;
 	background: url(../img/logo.png) no-repeat;
 }
 
-#stage {
+#stage_holder {
 	background: rgba(0, 0, 0, 0.333) url(../img/world2.png) no-repeat 130px -150px fixed;
 	border-top: 1px solid #00c0f0;
-	min-height: 750px;
+}
+#stage {
+	max-width: 1600px;
 	clear: both;
 	overflow: hidden;
 }
@@ -41,6 +44,7 @@ footer {
 footer p {
 	display: block;
 	height: 30px;
+	text-align: center;
 }
 footer a {
 	color: #d7f9ff;
@@ -52,14 +56,13 @@ footer a:hover {
 }
 footer .footnote {
 	padding-left: 40px;
-	float: left;
+	text-align: left;
 	background: url(../img/footnote.png) no-repeat left -6px;
+	border-bottom: 1px dashed transparent;
 }
-footer .copy {
-	float: right;
-	text-align: right;
+footer:hover .footnote {
+	border-color: #00c0f0;
 }
-
 
 .node {
 	margin-top: -1px;
@@ -128,12 +131,12 @@ footer .copy {
 	padding-top: 6px;
 }
 .node .results li .count {
+	float: right;
 	padding-right: 3px;
 	font-size: 23px;
 	color: #00c0f0;
 	width: 80px;
 	text-align: right;
-	float: right;
 }
 .node .results .total {
 	font-weight: bold;
@@ -144,57 +147,128 @@ footer .copy {
 	color: #00c0f0;
 }
 body path {
-	fill: rgba(0, 0, 0, 0.1);
+	fill: #000;
+	fill-opacity: 0.1;
 	stroke: #00c0f0;
 	cursor: pointer;
 }
+body path.hover,
 body path:hover {
 	stroke: #fff;
-	fill: rgba(255, 255, 255, 0.1);
+	fill: #fff;
+}
+body text {
+	fill: #00c0f0;
+}
+body text.hover {
+	fill: #d7f9ff;
+}
+
+.label {
+	fill: #000;
+	fill-opacity: 0.8;
+	stroke-width: 2;
+}
+.grid {
+	stroke-opacity: 0.4;
+	stroke-width: 1;
+}
+.grid:hover {
+	fill: #000;
+	stroke: #00c0f0;
+}
+.text.left tspan {
+	text-anchor: end;
+}
+.text tspan {
+	font: normal normal normal 16px/1.5 'Nobile','Helvetica Neue',Helvetica,Arial,'Liberation Sans',FreeSans,sans-serif;
+}
+.line {
+	fill-opacity: 0;
+	stroke-width: 4;
+	stroke-linejoin: round;
+}
+.dot {
+	fill: #000;
+	stroke: #6868FF;
+	stroke-width: 2;
+}
+.dot.hover {
+	stroke: #d7f9ff;
+	stroke-width: 10;
 }
 
 
-#geschlecht {}
-#wie {}
-#zeit {}
-#alter {}
-#stundensatz {}
-#kunden {}
-#arbeitsbereich {}
-#wo {
-	width: 960px;
-	padding: 40px 0;
-}
-#wo .results {
+.results.small {
 	font-size: 13px;
 	float: left;
 	margin-left: 65px;
 }
-#wo .results li {
+.results.small li {
 	height: 29px;
 }
-#wo .results li .label {
+.results.small li .label {
 	padding-top: 3px;
 }
-#wo .results li em {
+.results.small li .count {
 	font-size: 16px;
+	width: 60px;
+}
+
+
+#stundensatz,
+#wo {
+	width: 960px;
+	padding: 40px 1px 40px 0;
+}
+#stundensatz .results {
+	width: 600px;
 }
 #wo > svg {
 	float: right;
 	margin-top: 30px;
 }
+#wo h3 {
+	padding-bottom:42px;
+}
+#alter {
+	padding-bottom: 128px;
+}
+#arbeitsbereich {
+	position: absolute;
+	top: 1446px;
+}
+
+@media screen and (max-width: 1457px) {
+	#arbeitsbereich {
+		left: 481px;
+	}
+	#alter {
+		padding-bottom: 201px;
+	}
+}
+
+#geschlecht {}
+#wie {}
+#zeit {}
+#stundensatz {}
+#kunden {}
 
 /* animation */
+footer .footnote,
 .node,
 .node .results li,
 footer a,
-body path {
+path,
+.dot,
+text {
 	-webkit-transition-duration: 0.5s;
 	-moz-transition-duration: 0.5s;
 	-o-transition-duration: 0.5s;
 	transition-duration: 0.5s;
 }
-
+path:hover,
+path.hover,
 .node .results li:hover,
 .node .results li.hover {
 	-webkit-transition-duration: 0.1s;
