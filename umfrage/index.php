@@ -18,7 +18,7 @@
 <h1>Die große Webworker-Stundensatzumfrage 2.0</h1>
 <p>
 	Mit dieser Umfrage soll ergründet werden, was (selbstständige) Webworker so für Ihre Dienste nehmen. Die Umfrage richtet sich an alle, die
-	auf eigene Rechnung Websites gestalten und/oder programmieren. <strong>Alle Fragen können ausgelassen oder mit "Keine Angabe" beantwortet
+	auf eigene Rechnung Websites gestalten und/oder programmieren. <strong>Alle Fragen können ausgelassen oder mit "keine Angabe" beantwortet
 	werden.</strong> Es werden neben den Antworten nur die Uhrzeit sowie die IP-Adresse des Ausfüllenden gespeichert. Die Ergebnisse werden
 	nach dem Ende der Umfrage sowohl in aufbereiteter Form wie auch als Rohdaten auf <a href="http://www.peterkroener.de/weblog">peterkroener.de/weblog</a>
 	veröffentlicht.
@@ -31,7 +31,7 @@
 <li>
 	<label for="satz">In welchem Bereich liegt dein Netto-Stundensatz?</label>
 	<select id="satz" name="stundensatz">
-		<option value="0">Keine Angabe</option>
+		<option value="0">keine Angabe</option>
 		<option value="u40">&lt; 30 €</option>
 		<option value="u30">30 - 39 €</option>
 		<option value="u50">40 - 49 €</option>
@@ -48,7 +48,7 @@
 <li>
 	<label for="form">In welcher Form bist du im Webwork-Bereich tätig?</label>
 	<select id="form" name="wie">
-		<option value="0">Keine Angabe</option>
+		<option value="0">keine Angabe</option>
 		<option value="vollzeit">Vollzeit-Selbstständiger</option>
 		<option value="teilzeit">Teilzeit-Selbstständiger</option>
 		<option value="schueler">Schüler/Studentenjob</option>
@@ -60,7 +60,7 @@
 <li>
 	<label for="zeit">Wie lange bist du schon Webwork-Bereich tätig?</label>
 	<select id="zeit" name="zeit">
-		<option value="0">Keine Angabe</option>
+		<option value="0">keine Angabe</option>
 		<option value="1">1 Jahr oder weniger</option>
 		<option value="3">1 - 3 Jahre</option>
 		<option value="5">3 - 5 Jahre</option>
@@ -73,7 +73,7 @@
 <li>
 	<label for="wo">Wo arbeitest du?</label>
 	<select id="wo" name="wo">
-		<option value="0">Keine Angabe</option>
+		<option value="0">keine Angabe</option>
 		<option value="bw">Baden-Württemberg</option>
 		<option value="by">Bayern</option>
 		<option value="be">Berlin</option>
@@ -125,7 +125,7 @@
 	<br>
 	<label for="alter">Wie alt bist du?
 		<select id="alter" name="alter">
-			<option value="0">Keine Angabe</option>
+			<option value="0">keine Angabe</option>
 			<option value="u20">&lt; 20</option>
 			<option value="u30">20 - 29</option>
 			<option value="u40">30 - 39</option>
@@ -136,7 +136,7 @@
 	</label>
 	<label for="ges">Dein Geschlecht?
 		<select id="ges" name="geschlecht">
-			<option value="0">Keine Angabe</option>
+			<option value="0">keine Angabe</option>
 			<option value="m">Männlich</option>
 			<option value="w">Weiblich</option>
 			<option value="o">Anderes</option>

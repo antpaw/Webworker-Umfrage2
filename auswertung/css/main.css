@@ -41,6 +41,7 @@ footer {
 footer p {
 	display: block;
 	height: 30px;
+	text-align: center;
 }
 footer a {
 	color: #d7f9ff;
@@ -52,14 +53,13 @@ footer a:hover {
 }
 footer .footnote {
 	padding-left: 40px;
-	float: left;
+	text-align: left;
 	background: url(../img/footnote.png) no-repeat left -6px;
+	border-bottom: 1px dashed transparent;
 }
-footer .copy {
-	float: right;
-	text-align: right;
+footer:hover .footnote {
+	border-color: #00c0f0;
 }
-
 
 .node {
 	margin-top: -1px;
@@ -242,6 +242,7 @@ body text.hover {
 #kunden {}
 
 /* animation */
+footer .footnote,
 .node,
 .node .results li,
 footer a,

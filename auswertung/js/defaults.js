@@ -3,7 +3,7 @@ var defaults = {
 		headline: 'Netto-Stundensatz',
 		view: 'analytics',
 		options: [
-			{ name: 0,		label: 'Keine Angabe' },
+			{ name: 0,		label: 'keine Angabe' },
 			{ name: 'u30',	label: 'unter 30 €' },
 			{ name: 'u40',	label: '40 – 49 €' },
 			{ name: 'u50',	label: '50 – 59 €' },
@@ -18,7 +18,7 @@ var defaults = {
 		headline: 'Alter',
 		view: 'piechart',
 		options: [
-			{ name: 0,		label: 'Keine Angabe' },
+			{ name: 0,		label: 'keine Angabe' },
 			{ name: 'u20',	label: 'unter 20' },
 			{ name: 'u30',	label: '20 – 29' },
 			{ name: 'u40',	label: '30 – 39' },
@@ -32,7 +32,7 @@ var defaults = {
 		view: 'piechart',
 		small: true,
 		options: [
-			{ name: 'e',	label: 'Keine Angabe' },
+			{ name: 'e',	label: 'keine Angabe' },
 			{ name: 'm',	label: 'Männlich' },
 			{ name: 'w',	label: 'Weiblich' },
 			{ name: 'o',	label: 'Anderes' }
@@ -44,7 +44,6 @@ var defaults = {
 		small: true,
 		view: 'piechart_map',
 		options: [
-	 		{ name: '0', 	label: 'Keine Angabe' },
 	 		{ name: 'bw',	label: 'Baden-Württemberg' },
 	 		{ name: 'by',	label: 'Bayern' },
 	 		{ name: 'bb',	label: 'Brandenburg' },
@@ -64,7 +63,8 @@ var defaults = {
 	 		{ name: 'ch',	label: 'Schweiz' },
 	 		{ name: 'at',	label: 'Österreich' },
 	 		{ name: 'o', 	label: 'Anderswo' },
-		]
+			{ name: '0', 	label: 'keine Angabe' },
+	 	]
 	},
 	'arbeitsbereich': {
 		headline: 'Arbeitsbereich',
@@ -82,7 +82,7 @@ var defaults = {
 		headline: 'Arbeitsform',
 		view: 'piechart',
 		options: [
-			{ name: 0,			label: 'Keine Angabe' },
+			{ name: 0,			label: 'keine Angabe' },
 			{ name: 'vollzeit',	label: 'Vollzeit' },
 			{ name: 'teilzeit',	label: 'Teilzeit' },
 			{ name: 'schueler',	label: 'Schüler/Studentenjob' },
@@ -93,7 +93,7 @@ var defaults = {
 		headline: 'Erfahrung',
 		view: 'piechart',
 		options: [
-			{ name: 0,		label: 'Keine Angabe' },
+			{ name: 0,		label: 'keine Angabe' },
 			{ name: 1,		label: '1 Jahr oder weniger' },
 			{ name: 3,		label: '1 – 3 Jahre' },
 			{ name: 5,		label: '3 – 5 Jahre' },
