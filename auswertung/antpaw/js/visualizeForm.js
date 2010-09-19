@@ -26,13 +26,30 @@ var visualizeForm = new Class({
 	},
 	
 	createNodes: function(){
-		this.nodes = this.options.nodesTmpl.clone().set('id', 'init_nodes');
+		this.nodes = this.options.nodesTmpl.clone();
 		for (var property in this.defaults){
 			this.defaults[property].name = property;
 			this.createOneNode(this.defaults[property]).inject(this.nodes);
 		}
 		
 		this.nodes.inject(this.options.stage);
+		var a = this.nodes;
+		var f = this.filter;
+		setTimeout(function(){
+			a.addClass('add');
+			
+			for (var nodeName in f) {
+				var filter = f[nodeName];
+				for (var i = 0; i < filter.values.length; i++) {
+					var chart = $(nodeName+'_chart_'+filter.values[i]);
+					if (chart) {
+						chart.addSvgClass('filter');
+					}
+					$(nodeName+'_label_'+filter.values[i]).addClass('filter');
+				}
+			}
+		}, 700);
+		
 	},
 	
 	createOneNode: function(nodeData){
@@ -54,18 +71,34 @@ var visualizeForm = new Class({
 		var ii = opts.length;
 		
 		for (i = 0; i < ii; i++) {
-			if (opts[i].value === undefined) {
-				opts[i].value = 0;
-			}
+			opts[i].value = 0;
 		}
 		
+		var canPlus = true;
 		var multiple = (nodeData.view === 'piechart_multiple');
+		var hasFilter = this.objectHasValues(this.filter);
+		
 		for (var j = 0; j < this.resultsLength; j++){
+			var result = this.results[j];
 			for (i = 0; i < ii; i++) {
-				if (multiple && this.results[j][opts[i].name] === undefined) continue;
-				if ( ! multiple && opts[i].name !== this.results[j][nodeData.name]) continue;
+				if (multiple && result[opts[i].name] === undefined) continue;
+				if ( ! multiple && result[nodeData.name] !== opts[i].name) continue;
 				
-				opts[i].value++;
+				if (hasFilter) {
+					for (var nodeName in this.filter) {
+						var filter = this.filter[nodeName];
+						multiple = (defaults[nodeName].view === 'piechart_multiple');
+						for (var a = 0; a < filter.values.length; a++){
+							if (multiple && filter.values[a] === undefined) continue;
+							if ( ! multiple && result[nodeName] !== filter.values[a]) continue;
+							
+							opts[i].value++;
+						}
+					}
+				}
+				else {
+					opts[i].value++;
+				}
 			}
 		}
 		
@@ -85,24 +118,28 @@ var visualizeForm = new Class({
 		
 		this.updateFilter(params[0], params[2]);
 		
-		this.removeNodes();
+		this.removeNodes(); //Alerts: 'moo! Element id is: ... '
 		this.createNodes();
-		
-		
-		for (var nodeName in this.filter) {
-			var filter = this.filter[nodeName];
-			for (var i = 0; i < filter.values.length; i++) {
-				var chart = $(nodeName+'_chart_'+filter.values[i]);
-				if (chart) {
-					chart.addSvgClass('filter');
-				}
-				$(nodeName+'_label_'+filter.values[i]).addClass('filter');
-			}
-		}
+			
 	},
 	
 	removeNodes: function(){
-		this.nodes.destroy();
+		var nodes = this.nodes;
+		nodes.addClass('remove');
+		setTimeout(function(){
+			nodes.destroy();
+		}, 600);
+	},
+	
+	objectHasValues: function(obj){
+		for (var prop in obj) {
+			if (obj.hasOwnProperty(prop)) {
+				if (obj[prop].values.length) {
+					return true;
+				}
+			}
+		}
+		return false;
 	},
 	
 	updateFilter: function(name, value){
@@ -116,7 +153,7 @@ var visualizeForm = new Class({
 				this.filter[name].values.erase(value);
 			}
 			else {
-				this.filter[name].values.push(value);
+				this.filter[name].values.include(value);
 			}
 		}
 	},

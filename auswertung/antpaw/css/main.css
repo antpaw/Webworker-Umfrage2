@@ -34,6 +34,16 @@ h1 {
 	max-width: 1600px;
 	clear: both;
 	overflow: hidden;
+	opacity: 0;
+	margin-top: -40px;
+}
+.nodes.add {
+	opacity: 1;
+	margin-top: 0;
+}
+.nodes.remove {
+	opacity: 0;
+	padding-top: 70px;
 }
 
 footer {
@@ -266,6 +276,7 @@ body text.hover {
 
 /* animation */
 footer .footnote,
+.nodes,
 .node,
 .node .results li,
 footer a,
