@@ -9,7 +9,11 @@
 	</head>
 	<body>
 		<h1>Webworker Umfrage</h1>
-		<div id="stage"></div>
+		<div id="stage">
+			<div id="notifications">
+				<p>Klicke auf ein Ergebniss um danach zu filtern</p>
+			</div>
+		</div>
 		<footer>
 			<p class="footnote">Mehrfachnennungen waren möglich</p>
 			<p class="twitter"><iframe allowtransparency="true" frameborder="0" role="presentation" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.html?url=http://projects.antpaw.org/webworker/&amp;text=Lots of svg/js/css3 love&amp;via=antpaw" style="width:110px"></iframe></p>
@@ -21,6 +25,7 @@
 		<script src="js/raphael-extentions.js"></script>
 		<script src="js/mootools-1.2.5-core-yc.js"></script>
 		<script src="js/mootools-extentions.js"></script>
+		<script src="js/scrollNotebar.js"></script>
 		<script src="js/defaults.js"></script>
 		<script src="js/results.js"></script>
 		<script src="js/visualizeForm.js"></script>
@@ -29,6 +34,8 @@
 				stage: $('stage'),
 				canvas: Raphael
 			});
+			
+			new scrollNotebar('notifications', { offsets: { y: 181 } });
 		</script>
 	</body>
 </html>
