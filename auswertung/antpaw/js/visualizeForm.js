@@ -74,26 +74,18 @@ var visualizeForm = new Class({
 			opts[i].value = 0;
 		}
 		
-		var canPlus = true;
-		var multiple = (nodeData.view === 'piechart_multiple');
 		var hasFilter = this.objectHasValues(this.filter);
 		
 		for (var j = 0; j < this.resultsLength; j++){
 			var result = this.results[j];
 			for (i = 0; i < ii; i++) {
+				var multiple = (nodeData.view === 'piechart_multiple');
 				if (multiple && result[opts[i].name] === undefined) continue;
 				if ( ! multiple && result[nodeData.name] !== opts[i].name) continue;
 				
 				if (hasFilter) {
-					for (var nodeName in this.filter) {
-						var filter = this.filter[nodeName];
-						multiple = (defaults[nodeName].view === 'piechart_multiple');
-						for (var a = 0; a < filter.values.length; a++){
-							if (multiple && filter.values[a] === undefined) continue;
-							if ( ! multiple && result[nodeName] !== filter.values[a]) continue;
-							
-							opts[i].value++;
-						}
+					if (this.filterApplies(result)) {
+						opts[i].value++;
 					}
 				}
 				else {
@@ -113,14 +105,53 @@ var visualizeForm = new Class({
 		};
 	},
 	
+	filterApplies: function(result){
+		var multiple,
+			nodeName,
+			filter,
+			multipleFilter = [],
+			i;
+		
+		for (nodeName in this.filter) {
+			filter = this.filter[nodeName];
+			if (this.defaults[nodeName].view === 'piechart_multiple'){
+				multipleFilter = filter.values;
+			}
+		}
+		
+		function hasMultipleValues(arr){
+			for (i = 0; i < multipleFilter.length; i++){
+				if (arr[multipleFilter[i]] === undefined) {
+					return false;
+				}
+			}
+			
+			return true;
+		}
+		
+		for (nodeName in this.filter) {
+			filter = this.filter[nodeName];
+			multiple = (this.defaults[nodeName].view === 'piechart_multiple');
+			for (i = 0; i < filter.values.length; i++){
+				if (multiple && result[filter.values[i]] !== undefined) {
+					return true;
+				}
+				if ( ! multiple && result[nodeName] === filter.values[i] && hasMultipleValues(result)) {
+					return true;
+				}
+				
+			}
+		}
+		return false;
+	},
+	
 	filterClick: function(e){
 		var params = e.target.id.split('_');
 		
 		this.updateFilter(params[0], params[2]);
 		
-		this.removeNodes(); //Alerts: 'moo! Element id is: ... '
+		this.removeNodes();
 		this.createNodes();
-			
 	},
 	
 	removeNodes: function(){
@@ -234,7 +265,7 @@ var visualizeForm = new Class({
 				dot.node.addSvgClass('dot');
 				dot.node.id = nodeData.name+'_chart_'+opts[i].name;
 				
-				blanket.push(r.rect(leftgutter + X * i, 0, X, height).attr({fill: "#000", opacity: 0}));
+				blanket.push(r.rect(leftgutter + X * i, 0, X, height).attr({fill: '#000', opacity: 0}));
 				var rect = blanket[blanket.length - 1];
 				
 				rect.node.id = nodeData.name+'_area_'+opts[i].name;
@@ -284,15 +315,18 @@ var visualizeForm = new Class({
 			
 			for (i = 0; i < slices.length; i++) {
 				var slice = slices[i];
+				
+				if ( ! slice) continue;
+				
 				slice.node.id = nodeData.name+'_chart_'+opts[i].name;
 
 				slice
 					.mouseover(function(){
-						this.animate({scale: [1.1, 1.1, pieSize, pieSize]}, 500, "backOut");
+						this.animate({scale: [1.1, 1.1, pieSize, pieSize]}, 500, 'backOut');
 						$(this.node.id.replace('_chart_', '_label_')).addClass('hover');
 					})
 					.mouseout(function(){
-						this.animate({scale: [1, 1, pieSize, pieSize]}, 500, "backIn");
+						this.animate({scale: [1, 1, pieSize, pieSize]}, 500, 'backIn');
 						$(this.node.id.replace('_chart_', '_label_')).removeClass('hover');
 					});
 					
@@ -318,7 +352,7 @@ var visualizeForm = new Class({
 			new Element('li', {
 				id: nodeData.name+'_label_'+nodeData.options[i].name,
 				html: '<span class="label">' + labels[i] + '</span>'+
-					'  <em class="count percent">' + parseInt(values[i] / valueTotal * 100) + '%</em>'+
+					'  <em class="count percent">' + (valueTotal ? parseInt(values[i] / valueTotal * 100) : 0) + '%</em>'+
 					'  <em class="count number">' + values[i] + '</em>'
 			})
 			.addEvents({

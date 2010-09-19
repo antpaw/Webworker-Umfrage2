@@ -6,7 +6,7 @@ body{font:16px/1.5 'Nobile','Helvetica Neue',Helvetica,Arial,'Liberation Sans',F
 
 
 html {
-	background: url(../img/world.png) no-repeat 130px -150px fixed, url(../img/bg.png) fixed;
+	background: url(../img/world.png) no-repeat 24% -30px fixed, url(../img/bg.png) fixed;
 	color: #d7f9ff;
 	padding-top: 40px;
 	text-shadow: 0px 1px #020735;
@@ -26,11 +26,12 @@ h1 {
 }
 
 #stage {
-	background: rgba(0, 0, 0, 0.333) url(../img/world2.png) no-repeat 130px -150px fixed;
+	background: rgba(0, 0, 0, 0.333) url(../img/world2.png) no-repeat 24% -30px fixed;
 	border-top: 1px solid #00c0f0;
 	min-height: 2500px;
 }
 .nodes {
+	position: relative;
 	max-width: 1600px;
 	clear: both;
 	overflow: hidden;
@@ -99,7 +100,7 @@ footer:hover .footnote {
 	height: 30px;
 	padding: 0 80px;
 	color: #fff;
-	text-shadow: 0 1px #000;
+	text-shadow: 0 2px #000;
 	text-align: center;
 	text-transform: uppercase;
 }
@@ -122,7 +123,7 @@ footer:hover .footnote {
 	background: rgba(40, 127, 165, 0);
 }
 .node .results li.filter {
-	background: rgba(255, 0, 0, 0.2);
+	background: rgba(255, 0, 0, 0.1);
 }
 .node .results li:hover,
 .node .results li.hover {
@@ -160,14 +161,17 @@ footer:hover .footnote {
 .node .results .total .label {
 	color: #00c0f0;
 }
-body path {
+circle,
+path {
 	fill: #000;
 	fill-opacity: 0.1;
 	stroke: #00c0f0;
 	cursor: pointer;
 }
-body path.hover,
-body path:hover {
+circle.hover,
+circle:hover,
+path.hover,
+path:hover {
 	stroke: #fff;
 	fill: #fff;
 }
@@ -210,12 +214,13 @@ body text.hover {
 	stroke: #6868FF;
 	stroke-width: 2;
 }
-.filter {
-	stroke: red;
-}
 .dot.hover {
 	stroke: #d7f9ff;
 	stroke-width: 10;
+}
+.filter {
+	stroke: #DF003F;
+	stroke-width: 2;
 }
 
 
@@ -256,7 +261,7 @@ body text.hover {
 }
 #arbeitsbereich {
 	position: absolute;
-	top: 1446px;
+	top: 1265px;
 }
 
 @media screen and (max-width: 1457px) {

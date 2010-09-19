@@ -18,7 +18,18 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
 		var value = values[j],
 			angleplus = 360 * value / total,
 			popangle = angle + (angleplus / 2),
+			p;
+			
+		if (total === values[j]) {
+			p = paper.circle(cx, cy, r);
+		}
+		else if (values[j] !== 0) {
 			p = sector(cx, cy, r, angle, angle + angleplus);
+		}
+		else {
+			slices.push(false);
+			return;
+		}
 		
 		slices.push(p);
 		angle += angleplus;
