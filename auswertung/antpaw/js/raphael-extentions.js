@@ -1,7 +1,8 @@
-Raphael.fn.pieChart = function (cx, cy, r, values, name) {
+Raphael.fn.pieChart = function (cx, cy, r, values) {
 	var paper = this;
 	var rad = Math.PI / 180;
 	var chart = this.set();
+	var slices = [];
 	function sector(cx, cy, r, startAngle, endAngle) {
 		var x1 = cx + r * Math.cos(-startAngle * rad),
 			x2 = cx + r * Math.cos(-endAngle * rad),
@@ -17,21 +18,9 @@ Raphael.fn.pieChart = function (cx, cy, r, values, name) {
 		var value = values[j],
 			angleplus = 360 * value / total,
 			popangle = angle + (angleplus / 2),
-			ms = 300,
-			delta = 30,
 			p = sector(cx, cy, r, angle, angle + angleplus);
-			
-		p.node.id = name+'_chart_'+j;
-			
-		p.mouseover(function(){
-			p.animate({scale: [1.1, 1.1, cx, cy]}, ms, "backOut");
-			$(p.node.id.replace('_chart_', '_label_')).addClass('hover');
-		}).mouseout(function(){
-			p.animate({scale: [1, 1, cx, cy]}, ms, "backIn");
-			$(p.node.id.replace('_chart_', '_label_')).removeClass('hover');
-		}).click(function(){
-			console.log(p.id);
-		});
+		
+		slices.push(p);
 		angle += angleplus;
 		chart.push(p);
 		start += .1;
@@ -45,7 +34,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values, name) {
 		process(i);
 	}
 
-	return chart;
+	return slices;
 };
 
 

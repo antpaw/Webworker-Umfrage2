@@ -99,7 +99,7 @@ var results = [
 {"stundensatz":"u70","wie":"vollzeit","zeit":"10+","wo":"nw","frontend":"1","beratung":"1","umgebung":"1","euausland":"1","alter":"u50","geschlecht":"m","time":1283174421,"ip":"80.139.203.41"},
 {"stundensatz":"u30","wie":"schueler","zeit":"10+","wo":"bw","backend":"1","land":"1","alter":"u30","geschlecht":"m","time":1283174435,"ip":"85.181.25.244"},
 {"stundensatz":"u50","wie":"vollzeit","zeit":"10","wo":"ni","webdesign":"1","frontend":"1","backend":"1","land":"1","alter":"u40","geschlecht":"m","time":1283174438,"ip":"188.193.15.96"},
-{"stundensatz":"u30","wie":"hobby","zeit":"3","wo":"nw","webdesign":"1","frontend":"1","umgebung":"1","alter":"u20","geschlecht":"m","time":1283174445,"ip":"84.63.44.34"},
+/* {"stundensatz":"u30","wie":"hobby","zeit":"3","wo":"nw","webdesign":"1","frontend":"1","umgebung":"1","alter":"u20","geschlecht":"m","time":1283174445,"ip":"84.63.44.34"},
 {"stundensatz":"u70","wie":"teilzeit","zeit":"5","wo":"nw","webdesign":"1","frontend":"1","beratung":"1","umgebung":"1","alter":"u40","geschlecht":"m","time":1283174448,"ip":"80.187.97.40"},
 {"stundensatz":"u70","wie":"hobby","zeit":"10","wo":"hh","frontend":"1","backend":"1","land":"1","alter":"u30","geschlecht":"m","time":1283174492,"ip":"195.244.116.209"},
 {"stundensatz":"u60","wie":"teilzeit","zeit":"10+","wo":"be","frontend":"1","backend":"1","beratung":"1","land":"1","alter":"u40","geschlecht":"m","time":1283174536,"ip":"80.153.169.158"},
@@ -828,7 +828,7 @@ var results = [
 {"stundensatz":"u30","wie":"teilzeit","zeit":"1","wo":"mv","webdesign":"1","alter":"0","geschlecht":"e","time":1284147570,"ip":"78.55.107.171"},
 {"stundensatz":"u50","wie":"teilzeit","zeit":"10+","wo":"rp","webdesign":"1","frontend":"1","land":"1","alter":"u40","geschlecht":"m","time":1284219848,"ip":"88.68.207.224"},
 {"stundensatz":"u30","wie":"teilzeit","zeit":"3","wo":"hh","frontend":"1","backend":"1","umgebung":"1","alter":"u30","geschlecht":"m","time":1284222728,"ip":"84.46.63.72"},
-{"stundensatz":"u50","wie":"vollzeit","zeit":"10","wo":"rp","webdesign":"1","frontend":"1","sonstiges":"1","umgebung":"1","land":"1","alter":"u40","geschlecht":"m","time":1284274227,"ip":"80.187.97.64"},
+{"stundensatz":"u50","wie":"vollzeit","zeit":"10","wo":"rp","webdesign":"1","frontend":"1","sonstiges":"1","umgebung":"1","land":"1","alter":"u40","geschlecht":"m","time":1284274227,"ip":"80.187.97.64"}, */
 {"stundensatz":"u40","wie":"vollzeit","zeit":"10","wo":"at","frontend":"1","backend":"1","beratung":"1","land":"1","alter":"u30","geschlecht":"m","time":1284366913,"ip":"84.115.143.73"},
 {"stundensatz":"u50","wie":"teilzeit","zeit":"5","wo":"by","webdesign":"1","frontend":"1","umgebung":"1","alter":"u30","geschlecht":"m","time":1284369397,"ip":"217.110.209.229"}
 ];

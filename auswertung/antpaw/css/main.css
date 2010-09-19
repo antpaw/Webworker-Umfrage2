@@ -25,14 +25,25 @@ h1 {
 	background: url(../img/logo.png) no-repeat;
 }
 
-#stage_holder {
+#stage {
 	background: rgba(0, 0, 0, 0.333) url(../img/world2.png) no-repeat 130px -150px fixed;
 	border-top: 1px solid #00c0f0;
+	min-height: 2500px;
 }
-#stage {
+.nodes {
 	max-width: 1600px;
 	clear: both;
 	overflow: hidden;
+	opacity: 0;
+	margin-top: -40px;
+}
+.nodes.add {
+	opacity: 1;
+	margin-top: 0;
+}
+.nodes.remove {
+	opacity: 0;
+	padding-top: 70px;
 }
 
 footer {
@@ -110,6 +121,9 @@ footer:hover .footnote {
 	cursor: pointer;
 	background: rgba(40, 127, 165, 0);
 }
+.node .results li.filter {
+	background: rgba(255, 0, 0, 0.2);
+}
 .node .results li:hover,
 .node .results li.hover {
 	background: rgba(40, 127, 165, 0.5);
@@ -169,6 +183,9 @@ body text.hover {
 	fill-opacity: 0.8;
 	stroke-width: 2;
 }
+.rect {
+	cursor: pointer;
+}
 .grid {
 	stroke-opacity: 0.4;
 	stroke-width: 1;
@@ -192,6 +209,9 @@ body text.hover {
 	fill: #000;
 	stroke: #6868FF;
 	stroke-width: 2;
+}
+.filter {
+	stroke: red;
 }
 .dot.hover {
 	stroke: #d7f9ff;
@@ -256,6 +276,7 @@ body text.hover {
 
 /* animation */
 footer .footnote,
+.nodes,
 .node,
 .node .results li,
 footer a,
