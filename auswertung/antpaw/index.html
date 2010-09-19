@@ -32,7 +32,10 @@
 		<script>
 			new visualizeForm(defaults, results, {
 				stage: $('stage'),
-				canvas: Raphael
+				canvas: Raphael,
+				onChangedFilter: function(){
+					console.log(this.filter);
+				}
 			});
 			
 			new scrollNotebar('notifications', { offsets: { y: 181 } });

@@ -74,7 +74,7 @@ var visualizeForm = new Class({
 			opts[i].value = 0;
 		}
 		
-		var hasFilter = this.objectHasValues(this.filter);
+		var hasFilter = ! new Hash(this.filter).isEmpty();
 		
 		for (var j = 0; j < this.resultsLength; j++){
 			var result = this.results[j];
@@ -83,12 +83,7 @@ var visualizeForm = new Class({
 				if (multiple && result[opts[i].name] === undefined) continue;
 				if ( ! multiple && result[nodeData.name] !== opts[i].name) continue;
 				
-				if (hasFilter) {
-					if (this.filterApplies(result)) {
-						opts[i].value++;
-					}
-				}
-				else {
+				if ( ! hasFilter || hasFilter && this.filterApplies(result)) {
 					opts[i].value++;
 				}
 			}
@@ -154,6 +149,8 @@ var visualizeForm = new Class({
 		
 		this.removeNodes();
 		this.createNodes();
+		
+		this.fireEvent('changedFilter');
 	},
 	
 	removeNodes: function(){
@@ -162,17 +159,6 @@ var visualizeForm = new Class({
 		setTimeout(function(){
 			nodes.destroy();
 		}, 600);
-	},
-	
-	objectHasValues: function(obj){
-		for (var prop in obj) {
-			if (obj.hasOwnProperty(prop)) {
-				if (obj[prop].values.length) {
-					return true;
-				}
-			}
-		}
-		return false;
 	},
 	
 	updateFilter: function(name, value){
@@ -184,6 +170,10 @@ var visualizeForm = new Class({
 		else {
 			if (this.filter[name].values.contains(value)) {
 				this.filter[name].values.erase(value);
+				
+				if ( ! this.filter[name].values.length) {
+					delete this.filter[name];
+				}
 			}
 			else {
 				this.filter[name].values.include(value);

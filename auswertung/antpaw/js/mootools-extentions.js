@@ -14,3 +14,14 @@ Element.implement({
 		return this;
 	}
 });
+
+Hash.implement({
+	isEmpty: function(){
+		for (var prop in this) {
+			if (this.hasOwnProperty(prop)) {
+				return false;
+			}
+		}
+		return true;
+	}
+});
