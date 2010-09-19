@@ -4,13 +4,13 @@ var visualizeForm = new Class({
 	options: {
 		stage: null,
 		chartHolder: new Element('div', {'class': 'node'}),
-		nodes: new Element('div', {'class': 'nodes'})
+		nodesTmpl: new Element('div', {'class': 'nodes'})
 	},
 	version: '0.1',
 	results: null,
 	resultsLength: 0,
-	
-	filter: [],
+	nodes: null,
+	filter: {},
 	
 	initialize: function(defaults, results, opts){
 		if (!$defined(results)) return;
@@ -22,17 +22,20 @@ var visualizeForm = new Class({
 		this.resultsLength = results.length;
 		this.defaults = defaults;
 		
-		
-		var nodes = this.options.nodes.clone().set('id', 'init_nodes');
-		for (var property in this.defaults){
-			this.defaults[property].name = property;
-			this.createNode(this.defaults[property]).inject(nodes);
-		}
-		
-		nodes.inject(this.options.stage);
+		this.createNodes();
 	},
 	
-	createNode: function(nodeData){
+	createNodes: function(){
+		this.nodes = this.options.nodesTmpl.clone().set('id', 'init_nodes');
+		for (var property in this.defaults){
+			this.defaults[property].name = property;
+			this.createOneNode(this.defaults[property]).inject(this.nodes);
+		}
+		
+		this.nodes.inject(this.options.stage);
+	},
+	
+	createOneNode: function(nodeData){
 		var result = this.countResults(nodeData);
 		
 		var holder = this.options.chartHolder.clone().addClass(nodeData.view).set('id', nodeData.name);
@@ -62,12 +65,11 @@ var visualizeForm = new Class({
 				if (multiple && this.results[j][opts[i].name] === undefined) continue;
 				if ( ! multiple && opts[i].name !== this.results[j][nodeData.name]) continue;
 				
-				
 				opts[i].value++;
 			}
 		}
 		
-		for (i = 0; i < opts.length; i++) {
+		for (i = 0; i < ii; i++) {
 			values.push(opts[i].value);
 			labels.push(opts[i].label);
 		}
@@ -80,15 +82,43 @@ var visualizeForm = new Class({
 	
 	filterClick: function(e){
 		var params = e.target.id.split('_');
-		var name = params[0];
-		var value = params[2]
 		
-		this.filter.push({
-			'name': name,
-			'values': [value]
-		});
+		this.updateFilter(params[0], params[2]);
 		
-		console.log(this.filter);
+		this.removeNodes();
+		this.createNodes();
+		
+		
+		for (var nodeName in this.filter) {
+			var filter = this.filter[nodeName];
+			for (var i = 0; i < filter.values.length; i++) {
+				var chart = $(nodeName+'_chart_'+filter.values[i]);
+				if (chart) {
+					chart.addSvgClass('filter');
+				}
+				$(nodeName+'_label_'+filter.values[i]).addClass('filter');
+			}
+		}
+	},
+	
+	removeNodes: function(){
+		this.nodes.destroy();
+	},
+	
+	updateFilter: function(name, value){
+		if (this.filter[name] === undefined || this.filter[name].values === undefined) {
+			this.filter[name] = {
+				values: [value]
+			};
+		}
+		else {
+			if (this.filter[name].values.contains(value)) {
+				this.filter[name].values.erase(value);
+			}
+			else {
+				this.filter[name].values.push(value);
+			}
+		}
 	},
 	
 	createChart: function(holder, values, labels, nodeData){
