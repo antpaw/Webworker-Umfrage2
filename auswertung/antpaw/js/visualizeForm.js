@@ -3,7 +3,8 @@ var visualizeForm = new Class({
 	
 	options: {
 		stage: null,
-		cartHolder: new Element('div', {'class': 'node'})
+		chartHolder: new Element('div', {'class': 'node'}),
+		nodes: new Element('div', {'class': 'nodes'})
 	},
 	version: '0.1',
 	results: null,
@@ -19,10 +20,14 @@ var visualizeForm = new Class({
 		this.resultsLength = results.length;
 		this.defaults = defaults;
 		
+		
+		var nodes = this.options.nodes.clone().set('id', 'init_nodes');
 		for (var property in this.defaults){
 			this.defaults[property].name = property;
-			this.createNode(this.defaults[property]).inject(this.options.stage);
+			this.createNode(this.defaults[property]).inject(nodes);
 		}
+		
+		nodes.inject(this.options.stage);
 	},
 	
 	createNode: function(nodeData){
@@ -52,7 +57,7 @@ var visualizeForm = new Class({
 			labels.push(opts[i].label);
 		}
 		
-		var holder = this.options.cartHolder.clone().addClass(nodeData.view).set('id', nodeData.name);
+		var holder = this.options.chartHolder.clone().addClass(nodeData.view).set('id', nodeData.name);
 		
 		this.createChart(holder, values, labels, nodeData);
 		this.createList(holder, values, labels, nodeData);
@@ -60,23 +65,31 @@ var visualizeForm = new Class({
 		return holder;
 	},
 	
+	filterClick: function(e){
+		var idPath = e.target.id.split('_');
+		console.log(idPath);
+	},
+	
 	createChart: function(holder, values, labels, nodeData){
 		var i, ii;
+		var opts = nodeData.options;
+		
 		if (nodeData.view === 'piechart_map') {
 			var R = this.options.canvas(holder, 450, 700);
 			
 			ii = nodeData.options.length;
 			for (i = 0; i < ii; i++) {
-				if (mapPaths[nodeData.options[i].name] === undefined) continue;
-				$(R.path(mapPaths[nodeData.options[i].name]).scale(1.5, 1.5, 0, 0)[0])
-					.set('id', nodeData.name+'_chart_'+i)
+				if (mapPaths[opts[i].name] === undefined) continue;
+				$(R.path(mapPaths[opts[i].name]).scale(1.5, 1.5, 0, 0)[0])
+					.set('id', nodeData.name+'_chart_'+opts[i].name)
 					.addEvents({
 						mouseover: function(e){
 							$(e.target.id.replace('_chart_', '_label_')).addClass('hover');
 						},
 						mouseout: function(e){
 							$(e.target.id.replace('_chart_', '_label_')).removeClass('hover');
-						}
+						},
+						click: this.filterClick.bind(this)
 					});
 			}
 		}
@@ -90,8 +103,8 @@ var visualizeForm = new Class({
 				bottomgutter = 50,
 				topgutter = 20,
 				r = this.options.canvas(holder, width, height),
-				X = (width - leftgutter) / labels.length,
 				max = Math.max.apply(Math, values),
+				X = (width - leftgutter) / labels.length,
 				Y = (height - bottomgutter - topgutter) / max;
 
 			r.drawGrid(
@@ -127,16 +140,17 @@ var visualizeForm = new Class({
 				var euro = parseInt(labels[i].split('–')[0].replace(/[^0-9\.]+/, ''));
 				labelTextBottom = r.text(x, height-20, (euro ? euro+' €' : 'kA'));
 				labelTextBottom.node.setAttribute('class', 'text down');
-				labelTextBottom.node.id = nodeData.name+'_text_'+i;
+				labelTextBottom.node.id = nodeData.name+'_text_'+opts[i].name;
 				
 				var dot = r.circle(x, y, 4);
 				dot.node.setAttribute('class', 'dot');
-				dot.node.id = nodeData.name+'_chart_'+i;
+				dot.node.id = nodeData.name+'_chart_'+opts[i].name;
 				
-				blanket.push(r.rect(leftgutter + X * i, 0, X, height).attr({fill: "#0000ff", opacity: 0}));
+				blanket.push(r.rect(leftgutter + X * i, 0, X, height).attr({fill: "#000", opacity: 0}));
 				var rect = blanket[blanket.length - 1];
 				
-				rect.node.id = nodeData.name+'_area_'+i;
+				rect.node.id = nodeData.name+'_area_'+opts[i].name;
+				rect.node.setAttribute('class', 'rect');
 				
 				$(rect.node)
 					.addEvents({
@@ -149,7 +163,8 @@ var visualizeForm = new Class({
 							$(e.target.id.replace('_area_', '_chart_')).setAttribute('class', 'dot');
 							$(e.target.id.replace('_area_', '_label_')).removeClass('hover');
 							$(e.target.id.replace('_area_', '_text_')).setAttribute('class', 'text down');
-						}
+						},
+						click: this.filterClick
 					});
 				
 			}
@@ -176,8 +191,26 @@ var visualizeForm = new Class({
 			}
 			pieSize = canvasSize/2;
 			
-			this.options.canvas(holder, canvasSize, canvasSize)
-				.pieChart(pieSize, pieSize, radius, values, nodeData.name);
+			var slices = this.options.canvas(holder, canvasSize, canvasSize)
+				.pieChart(pieSize, pieSize, radius, values);
+			
+			for (i = 0; i < slices.length; i++) {
+				var slice = slices[i];
+				slice.node.id = nodeData.name+'_chart_'+opts[i].name;
+
+				slice
+					.mouseover(function(){
+						this.animate({scale: [1.1, 1.1, pieSize, pieSize]}, 500, "backOut");
+						$(this.node.id.replace('_chart_', '_label_')).addClass('hover');
+					})
+					.mouseout(function(){
+						this.animate({scale: [1, 1, pieSize, pieSize]}, 500, "backIn");
+						$(this.node.id.replace('_chart_', '_label_')).removeClass('hover');
+					});
+					
+				$(slice.node)
+					.addEvent('click', this.filterClick.bind(this));
+			}
 		}
 	},
 	
@@ -185,6 +218,7 @@ var visualizeForm = new Class({
 		var valueTotal = 0;
 		var i;
 		var ii = values.length;
+		var thisClass = this;
 		
 		for (i = 0; i < ii; i++) {
 			valueTotal += values[i];
@@ -194,31 +228,26 @@ var visualizeForm = new Class({
 		
 		for (i = 0; i < ii; i++) {
 			new Element('li', {
-				id: nodeData.name+'_label_'+i,
+				id: nodeData.name+'_label_'+nodeData.options[i].name,
 				html: '<span class="label">' + labels[i] + '</span>'+
 					'  <em class="count percent">' + parseInt(values[i] / valueTotal * 100) + '%</em>'+
 					'  <em class="count number">' + values[i] + '</em>'
 			})
 			.addEvents({
 				mouseenter: function(e){
-					var elem = e.target;
-					if (elem.id === ''){
-						elem = elem.getParent('li');
-					}
-					var chart = document.getElementById(elem.id.replace('_label_', '_chart_'));
+					var chart = $(this.id.replace('_label_', '_chart_'));
 					if (chart){
 						chart.setAttribute('class', chart.getAttribute('class')+' hover');
 					}
 				},
 				mouseleave: function(e){
-					var elem = e.target;
-					if (elem.id === ''){
-						elem = elem.getParent('li');
-					}
-					var chart = document.getElementById(elem.id.replace('_label_', '_chart_'));
+					var chart = $(this.id.replace('_label_', '_chart_'));
 					if (chart){
 						chart.setAttribute('class', chart.getAttribute('class').replace(' hover', ''));
 					}
+				},
+				click: function(){
+					thisClass.filterClick({target: this});
 				}
 			})
 			.inject(ul);
