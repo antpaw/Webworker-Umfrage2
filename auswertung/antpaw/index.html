@@ -11,7 +11,7 @@
 		<h1>Webworker Umfrage</h1>
 		<div id="stage">
 			<div id="notifications">
-				<p>Klicke auf ein Ergebniss um danach zu filtern</p>
+				<p>Klicke auf ein <strong>Ergebnis</strong> um danach zu filtern.</p>
 			</div>
 		</div>
 		<footer>
@@ -30,15 +30,52 @@
 		<script src="js/results.js"></script>
 		<script src="js/visualizeForm.js"></script>
 		<script>
+			var stageElem = $('stage');
+			var notifications = $('notifications');
+			
+			function stageAddPadding(elem){
+				stageElem.setStyles({'padding-top': elem.getSize().y});
+			}
+			
 			new visualizeForm(defaults, results, {
-				stage: $('stage'),
+				stage: stageElem,
 				canvas: Raphael,
 				onChangedFilter: function(){
-					console.log(this.filter);
+					notifications.empty();
+					var dl = new Element('dl', {'class': 'filter_list'});
+					
+					for (var filterName in this.filter) {
+						new Element('dt', {text: this.defaults[filterName].headline}).inject(dl);
+						var opts = this.defaults[filterName].options;
+						for (var i = 0; i < opts.length; i++) {
+							if (this.filter[filterName].values.contains(opts[i].name)) {
+								new Element('dd', {text: opts[i].label})
+									.set('id', filterName+'_filter_'+opts[i].name)
+									.addEvent('click', this.filterClick.bind(this))
+									.inject(dl);
+							}
+						}
+					}
+					
+					if (new Hash(this.filter).isEmpty()){
+						new Element('p', {'html': 'Der <strong>Filter</strong> ist momentan leer.'}).inject(notifications);
+					}
+					else {
+						dl.inject(notifications);
+					}
+					stageAddPadding(notifications);
 				}
 			});
+			window.addEvent('resize', function(){
+				stageAddPadding(notifications);
+			});
 			
-			new scrollNotebar('notifications', { offsets: { y: 181 } });
+			new scrollNotebar(notifications, {offsets: {y: 181}});
+			
+			stageAddPadding(notifications);
+			setTimeout(function(){
+				notifications.addClass('add');
+			}, 400)
 		</script>
 	</body>
 </html>

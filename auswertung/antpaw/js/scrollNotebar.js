@@ -9,7 +9,7 @@ var scrollNotebar = new Class({
 	initialize: function(menu, options) {
 		this.setOptions(options);
 		
-		this.menu = $(menu);
+		this.menu = menu;
 		this.move = this.options.mode == 'vertical' ? 'y' : 'x';
 		
 		window.addEvent('scroll', this.scrollListener.bind(this));
