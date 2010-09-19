@@ -115,7 +115,9 @@ var visualizeForm = new Class({
 		for (nodeName in this.filter) {
 			filter = this.filter[nodeName];
 			if (this.defaults[nodeName].view === 'piechart_multiple'){
-				multipleFilter = filter.values;
+				for (i = 0; i < multipleFilter; i++) {
+					multipleFilter = filter.values;
+				}
 			}
 		}
 		
