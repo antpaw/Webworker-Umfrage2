@@ -10,6 +10,8 @@ var visualizeForm = new Class({
 	results: null,
 	resultsLength: 0,
 	
+	filter: [],
+	
 	initialize: function(defaults, results, opts){
 		if (!$defined(results)) return;
 		if (!$defined(defaults)) return;
@@ -31,6 +33,17 @@ var visualizeForm = new Class({
 	},
 	
 	createNode: function(nodeData){
+		var result = this.countResults(nodeData);
+		
+		var holder = this.options.chartHolder.clone().addClass(nodeData.view).set('id', nodeData.name);
+		
+		this.createChart(holder, result.values, result.labels, nodeData);
+		this.createList(holder, result.values, result.labels, nodeData);
+		
+		return holder;
+	},
+	
+	countResults: function(nodeData){
 		var values = [];
 		var labels = [];
 		var opts = nodeData.options;
@@ -48,6 +61,8 @@ var visualizeForm = new Class({
 			for (i = 0; i < ii; i++) {
 				if (multiple && this.results[j][opts[i].name] === undefined) continue;
 				if ( ! multiple && opts[i].name !== this.results[j][nodeData.name]) continue;
+				
+				
 				opts[i].value++;
 			}
 		}
@@ -57,17 +72,23 @@ var visualizeForm = new Class({
 			labels.push(opts[i].label);
 		}
 		
-		var holder = this.options.chartHolder.clone().addClass(nodeData.view).set('id', nodeData.name);
-		
-		this.createChart(holder, values, labels, nodeData);
-		this.createList(holder, values, labels, nodeData);
-		
-		return holder;
+		return {
+			'values': values,
+			'labels': labels
+		};
 	},
 	
 	filterClick: function(e){
-		var idPath = e.target.id.split('_');
-		console.log(idPath);
+		var params = e.target.id.split('_');
+		var name = params[0];
+		var value = params[2]
+		
+		this.filter.push({
+			'name': name,
+			'values': [value]
+		});
+		
+		console.log(this.filter);
 	},
 	
 	createChart: function(holder, values, labels, nodeData){
@@ -119,7 +140,7 @@ var visualizeForm = new Class({
 				path = r.path(),
 				blanket = r.set();
 			
-			path.node.setAttribute('class', 'line');
+			path.node.addSvgClass('line');
 			
 			for (i = 0, ii = labels.length; i < ii; i++) {
 				var y = Math.round(height - bottomgutter - Y * values[i]),
@@ -139,32 +160,32 @@ var visualizeForm = new Class({
 				
 				var euro = parseInt(labels[i].split('–')[0].replace(/[^0-9\.]+/, ''));
 				labelTextBottom = r.text(x, height-20, (euro ? euro+' €' : 'kA'));
-				labelTextBottom.node.setAttribute('class', 'text down');
+				labelTextBottom.node.addSvgClass('text down');
 				labelTextBottom.node.id = nodeData.name+'_text_'+opts[i].name;
 				
 				var dot = r.circle(x, y, 4);
-				dot.node.setAttribute('class', 'dot');
+				dot.node.addSvgClass('dot');
 				dot.node.id = nodeData.name+'_chart_'+opts[i].name;
 				
 				blanket.push(r.rect(leftgutter + X * i, 0, X, height).attr({fill: "#000", opacity: 0}));
 				var rect = blanket[blanket.length - 1];
 				
 				rect.node.id = nodeData.name+'_area_'+opts[i].name;
-				rect.node.setAttribute('class', 'rect');
+				rect.node.addSvgClass('rect');
 				
 				$(rect.node)
 					.addEvents({
 						mouseover: function(e){
-							$(e.target.id.replace('_area_', '_chart_')).setAttribute('class', 'dot hover');
+							$(e.target.id.replace('_area_', '_chart_')).addSvgClass('hover')
 							$(e.target.id.replace('_area_', '_label_')).addClass('hover');
-							$(e.target.id.replace('_area_', '_text_')).setAttribute('class', 'text down hover');
+							$(e.target.id.replace('_area_', '_text_')).addSvgClass('hover');
 						},
 						mouseout: function(e){
-							$(e.target.id.replace('_area_', '_chart_')).setAttribute('class', 'dot');
+							$(e.target.id.replace('_area_', '_chart_')).removeSvgClass('hover')
 							$(e.target.id.replace('_area_', '_label_')).removeClass('hover');
-							$(e.target.id.replace('_area_', '_text_')).setAttribute('class', 'text down');
+							$(e.target.id.replace('_area_', '_text_')).removeSvgClass('hover');
 						},
-						click: this.filterClick
+						click: this.filterClick.bind(this)
 					});
 				
 			}
@@ -175,7 +196,7 @@ var visualizeForm = new Class({
 			var labelTextBottom;
 			for (i = 0; i <= vertCells; i++) {
 				labelTextBottom = r.text(leftgutter+25, height-bottomgutter-i*cellHeight+5, Math.ceil(girdValue *i));
-				labelTextBottom.node.setAttribute('class', 'text left');
+				labelTextBottom.node.addSvgClass('text left');
 			}
 			
 			path.attr({path: p.concat([x, y, x, y])});
@@ -237,13 +258,13 @@ var visualizeForm = new Class({
 				mouseenter: function(e){
 					var chart = $(this.id.replace('_label_', '_chart_'));
 					if (chart){
-						chart.setAttribute('class', chart.getAttribute('class')+' hover');
+						chart.addSvgClass('hover');
 					}
 				},
 				mouseleave: function(e){
 					var chart = $(this.id.replace('_label_', '_chart_'));
 					if (chart){
-						chart.setAttribute('class', chart.getAttribute('class').replace(' hover', ''));
+						chart.removeSvgClass('hover');
 					}
 				},
 				click: function(){
