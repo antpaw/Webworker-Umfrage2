@@ -36,17 +36,82 @@ h1 {
 	clear: both;
 	overflow: hidden;
 	opacity: 0;
-	margin-top: -40px;
+	top: -40px;
 }
 .nodes.add {
 	opacity: 1;
-	margin-top: 0;
+	top: 0;
 }
 .nodes.remove {
 	opacity: 0;
-	padding-top: 70px;
+	top: 70px;
 }
-
+#notifications {
+	display: block;
+	width: 100%;
+	padding: 10px 68px 0;
+	z-index: 100;
+	background: rgba(0, 0, 0, 0.6);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+	position: fixed;
+	height: auto;
+	top: 0;
+	opacity: 0;
+	-webkit-transition-property: opacity;
+	-moz-transition-property: opacity;
+	-o-transition-property: opacity;
+	transition-property: opacity;
+}
+#notifications.add {
+	opacity: 1;
+	
+}
+#notifications p {
+	margin-bottom: 10px;
+}
+.filter_list {
+	margin: 0;
+	width: 90%;
+	clear: both;
+	overflow: hidden;
+}
+.filter_list dt,
+.filter_list dd {
+	float: left;
+	padding: 0 10px;
+	margin-bottom: 10px;
+}
+.filter_list dt {
+	padding-left: 30px;
+	font-weight: bold;
+}
+.filter_list dt:after {
+	content: ':';
+}
+.filter_list dt:first-child {
+	padding-left: 0;
+}
+.filter_list dd {
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-o-border-radius: 4px;
+	border-radius: 4px;
+	cursor: pointer;
+	margin-right: 5px;
+	background:	rgba(0, 192, 240, 0.4);
+}
+.filter_list dd:hover {
+	background:	rgba(0, 192, 240, 0.8);
+}
+.filter_list dd:hover:after {
+	content: ' ×';
+	font-size: 16px;
+	color: black;
+	position: relative;
+	text-shadow: none;
+	top: -2px;
+	right: -4px;
+}
 footer {
 	background: rgba(0, 0, 0, 0.333);
 	padding: 50px 70px 20px 50px;
@@ -280,8 +345,11 @@ body text.hover {
 #kunden {}
 
 /* animation */
+#stage,
+.filter_list dd:hover,
 footer .footnote,
 .nodes,
+.add,
 .node,
 .node .results li,
 footer a,
@@ -293,6 +361,7 @@ text {
 	-o-transition-duration: 0.5s;
 	transition-duration: 0.5s;
 }
+.filter_list dd,
 path:hover,
 path.hover,
 .node .results li:hover,
