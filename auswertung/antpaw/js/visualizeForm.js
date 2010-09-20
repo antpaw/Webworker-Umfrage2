@@ -110,8 +110,8 @@ var visualizeForm = new Class({
 		for (nodeName in this.filter) {
 			filter = this.filter[nodeName];
 			if (this.defaults[nodeName].view === 'piechart_multiple'){
-				for (i = 0; i < multipleFilter; i++) {
-					multipleFilter = filter.values;
+				for (i = 0; i < filter.values.length; i++) {
+					multipleFilter.push(filter.values[i]);
 				}
 			}
 		}
@@ -130,16 +130,16 @@ var visualizeForm = new Class({
 			filter = this.filter[nodeName];
 			multiple = (this.defaults[nodeName].view === 'piechart_multiple');
 			for (i = 0; i < filter.values.length; i++){
-				if (multiple && result[filter.values[i]] !== undefined) {
-					return true;
+				if (multiple && result[filter.values[i]] === undefined) {
+					return false;
 				}
-				if ( ! multiple && result[nodeName] === filter.values[i] && hasMultipleValues(result)) {
-					return true;
+				if ( ! multiple && (result[nodeName] !== filter.values[i] || !hasMultipleValues(result))) {
+					return false;
 				}
 				
 			}
 		}
-		return false;
+		return true;
 	},
 	
 	filterClick: function(e){
@@ -176,7 +176,14 @@ var visualizeForm = new Class({
 				}
 			}
 			else {
-				this.filter[name].values.include(value);
+				if (this.defaults[name].view === 'piechart_multiple') {
+					this.filter[name].values.include(value);
+				}
+				else {
+					this.filter[name] = {
+						values: [value]
+					};
+				}
 			}
 		}
 	},
@@ -205,7 +212,6 @@ var visualizeForm = new Class({
 			}
 		}
 		else if (nodeData.view === 'analytics') {
-			 
 			var width = 780,
 				height = 250,
 				vertCells = 5,
@@ -216,8 +222,12 @@ var visualizeForm = new Class({
 				r = this.options.canvas(holder, width, height),
 				max = Math.max.apply(Math, values),
 				X = (width - leftgutter) / labels.length,
+				Y;
+			
+			if (max) {
 				Y = (height - bottomgutter - topgutter) / max;
-
+			}
+			
 			r.drawGrid(
 				leftgutter + X * .5,
 				topgutter,
@@ -225,6 +235,8 @@ var visualizeForm = new Class({
 				height - topgutter - bottomgutter,
 				horzCells, vertCells
 			);
+			
+			if ( ! max) return;
 			
 			var p,
 				path = r.path(),
