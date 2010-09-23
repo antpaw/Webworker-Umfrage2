@@ -1,7 +1,7 @@
 var defaults = {
 	'stundensatz': {
 		headline: 'Netto-Stundensatz',
-		view: 'analytics',
+		view: 'linechart',
 		options: [
 			{ name: '0',	label: 'keine Angabe' },
 			{ name: 'u30',	label: 'unter 30 €' },
