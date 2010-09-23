@@ -13,8 +13,8 @@ var visualizeForm = new Class({
 	filter: {},
 	
 	initialize: function(defaults, results, opts){
-		if (!$defined(results)) return;
-		if (!$defined(defaults)) return;
+		if (!$defined(results)) { return; }
+		if (!$defined(defaults)) { return; }
 		
 		this.setOptions(opts);
 		
@@ -80,8 +80,8 @@ var visualizeForm = new Class({
 			var result = this.results[j];
 			for (i = 0; i < ii; i++) {
 				var multiple = (nodeData.view === 'piechart_multiple');
-				if (multiple && result[opts[i].name] === undefined) continue;
-				if ( ! multiple && result[nodeData.name] !== opts[i].name) continue;
+				if (multiple && result[opts[i].name] === undefined) { continue; }
+				if ( ! multiple && result[nodeData.name] !== opts[i].name) { continue; }
 				
 				if ( ! hasFilter || hasFilter && this.filterApplies(result)) {
 					opts[i].value++;
@@ -162,7 +162,7 @@ var visualizeForm = new Class({
 	},
 	
 	updateFilter: function(name, value){
-		if (this.filter[name] === undefined || this.filter[name].values === undefined) {
+		if (this.filter[name] === undefined || this.filter[name].values === undefined) {
 			this.filter[name] = {
 				values: [value]
 			};
@@ -197,7 +197,9 @@ var visualizeForm = new Class({
 			
 			ii = nodeData.options.length;
 			for (i = 0; i < ii; i++) {
-				if (mapPaths[opts[i].name] === undefined) continue;
+				if (mapPaths[opts[i].name] === undefined) {
+					continue;
+				}
 				$(R.path(mapPaths[opts[i].name]).scale(1.5, 1.5, 0, 0)[0])
 					.set('id', nodeData.name+'_chart_'+opts[i].name)
 					.addEvents({
@@ -211,79 +213,33 @@ var visualizeForm = new Class({
 					});
 			}
 		}
-		else if (nodeData.view === 'analytics') {
+		else if (nodeData.view === 'linechart') {
 			var width = 780,
-				height = 250,
-				vertCells = 5,
-				horzCells = labels.length-1,
-				leftgutter = 0,
-				bottomgutter = 50,
-				topgutter = 20,
-				r = this.options.canvas(holder, width, height),
-				max = Math.max.apply(Math, values),
-				X = (width - leftgutter) / labels.length,
-				Y;
+				height = 250;
 			
-			if (max) {
-				Y = (height - bottomgutter - topgutter) / max;
+			for (i = 0; i < labels.length; i++) {
+				var euro = parseInt(labels[i].split('–')[0].replace(/[^0-9\.]+/, ''), 10);
+				labels[i] = euro? euro+' €' : 'kA';
 			}
 			
-			r.drawGrid(
-				leftgutter + X * .5,
-				topgutter,
-				width - leftgutter - X,
-				height - topgutter - bottomgutter,
-				horzCells, vertCells
-			);
-			
-			if ( ! max) return;
-			
-			var p,
-				path = r.path(),
-				blanket = r.set();
-			
-			path.node.addSvgClass('line');
-			
-			for (i = 0, ii = labels.length; i < ii; i++) {
-				var y = Math.round(height - bottomgutter - Y * values[i]),
-					x = Math.round(leftgutter + X * (i + .5)),
-					labelTextLeft;
-				if (i === 0) {
-					p = ["M", x, y, "C", x, y];
-				}
-				if (i && i < ii - 1) {
-					var Y0 = Math.round(height - bottomgutter - Y * values[i - 1]),
-						X0 = Math.round(leftgutter + X * (i - .5)),
-						Y2 = Math.round(height - bottomgutter - Y * values[i + 1]),
-						X2 = Math.round(leftgutter + X * (i + 1.5));
-					var a = getAnchors(X0, Y0, x, y, X2, Y2);
-					p = p.concat([a.x1, a.y1, x, y, a.x2, a.y2]);
-				}
+			var points = this.options.canvas(holder, width, height)
+					.lineChart(width, height, values, labels);
+					
+			for (i = 0; i < points.length; i++) {
 				
-				var euro = parseInt(labels[i].split('–')[0].replace(/[^0-9\.]+/, ''));
-				labelTextBottom = r.text(x, height-20, (euro ? euro+' €' : 'kA'));
-				labelTextBottom.node.addSvgClass('text down');
-				labelTextBottom.node.id = nodeData.name+'_text_'+opts[i].name;
+				points[i].labelTextBottom.node.id = nodeData.name+'_text_'+opts[i].name;
+				points[i].dot.node.id = nodeData.name+'_chart_'+opts[i].name;
+				points[i].rect.node.id = nodeData.name+'_area_'+opts[i].name;
 				
-				var dot = r.circle(x, y, 4);
-				dot.node.addSvgClass('dot');
-				dot.node.id = nodeData.name+'_chart_'+opts[i].name;
-				
-				blanket.push(r.rect(leftgutter + X * i, 0, X, height).attr({fill: '#000', opacity: 0}));
-				var rect = blanket[blanket.length - 1];
-				
-				rect.node.id = nodeData.name+'_area_'+opts[i].name;
-				rect.node.addSvgClass('rect');
-				
-				$(rect.node)
+				$(points[i].rect.node)
 					.addEvents({
 						mouseover: function(e){
-							$(e.target.id.replace('_area_', '_chart_')).addSvgClass('hover')
+							$(e.target.id.replace('_area_', '_chart_')).addSvgClass('hover');
 							$(e.target.id.replace('_area_', '_label_')).addClass('hover');
 							$(e.target.id.replace('_area_', '_text_')).addSvgClass('hover');
 						},
 						mouseout: function(e){
-							$(e.target.id.replace('_area_', '_chart_')).removeSvgClass('hover')
+							$(e.target.id.replace('_area_', '_chart_')).removeSvgClass('hover');
 							$(e.target.id.replace('_area_', '_label_')).removeClass('hover');
 							$(e.target.id.replace('_area_', '_text_')).removeSvgClass('hover');
 						},
@@ -291,17 +247,6 @@ var visualizeForm = new Class({
 					});
 				
 			}
-			
-			var cellHeight = (height - bottomgutter -topgutter ) / vertCells;
-			var girdValue = max / vertCells;
-			
-			var labelTextBottom;
-			for (i = 0; i <= vertCells; i++) {
-				labelTextBottom = r.text(leftgutter+25, height-bottomgutter-i*cellHeight+5, Math.ceil(girdValue *i));
-				labelTextBottom.node.addSvgClass('text left');
-			}
-			
-			path.attr({path: p.concat([x, y, x, y])});
 		}
 		else {
 			var canvasSize, pieSize, radius;
@@ -315,12 +260,14 @@ var visualizeForm = new Class({
 			pieSize = canvasSize/2;
 			
 			var slices = this.options.canvas(holder, canvasSize, canvasSize)
-				.pieChart(pieSize, pieSize, radius, values);
+						.pieChart(pieSize, pieSize, radius, values);
 			
 			for (i = 0; i < slices.length; i++) {
 				var slice = slices[i];
 				
-				if ( ! slice) continue;
+				if ( ! slice) {
+					continue;
+				}
 				
 				slice.node.id = nodeData.name+'_chart_'+opts[i].name;
 
@@ -334,8 +281,7 @@ var visualizeForm = new Class({
 						$(this.node.id.replace('_chart_', '_label_')).removeClass('hover');
 					});
 					
-				$(slice.node)
-					.addEvent('click', this.filterClick.bind(this));
+				$(slice.node).addEvent('click', this.filterClick.bind(this));
 			}
 		}
 	},
@@ -350,14 +296,18 @@ var visualizeForm = new Class({
 			valueTotal += values[i];
 		}
 		
-		var ul = new Element('ul', {'class': 'results'+(nodeData.small ? ' small' : '')});
+		var ul = new Element('ul', {'class': 'results'+(nodeData.small? ' small' : '')});
+		
+		function liHtml(label, percent, number) {
+			return	' <span class="label">' + label + '</span>'+
+					' <em class="count percent">' + percent + '%</em>'+
+					' <em class="count number">' + number + '</em>';
+		}
 		
 		for (i = 0; i < ii; i++) {
 			new Element('li', {
 				id: nodeData.name+'_label_'+nodeData.options[i].name,
-				html: '<span class="label">' + labels[i] + '</span>'+
-					'  <em class="count percent">' + (valueTotal ? parseInt(values[i] / valueTotal * 100) : 0) + '%</em>'+
-					'  <em class="count number">' + values[i] + '</em>'
+				html: liHtml(labels[i], valueTotal? parseInt(values[i] / valueTotal * 100, 10) : 0, values[i])
 			})
 			.addEvents({
 				mouseenter: function(e){
@@ -381,9 +331,7 @@ var visualizeForm = new Class({
 		
 		new Element('li', {
 			'class': 'total',
-			html: '<span class="label">Insgesamt</span>'+
-				'  <em class="count percent">100%</em>'+
-				'  <em class="count number">' + valueTotal + '</em>'
+			html: liHtml('Insgesamt', 100, valueTotal)
 		}).inject(ul);
 		
 		new Element('h3', {text: nodeData.headline}).inject(holder, 'top');
