@@ -4,6 +4,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
 	var chart = this.set();
 	var angle = 0;
 	var total = 0;
+	var slices = [];
 	var i, ii;
 	
 	function sector(cx, cy, r, startAngle, endAngle) {
@@ -19,7 +20,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
 			p;
 		
 		if (value === 0) {
-			chart.push(false);
+			slices.push(false);
 			return;
 		}
 		else if (total === value) {
@@ -31,6 +32,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
 		
 		angle += angleplus;
 		chart.push(p);
+		slices.push(p);
 	}
 	
 	for (i = 0, ii = values.length; i < ii; i++) {
@@ -40,7 +42,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
 		createSlice(values[i]);
 	}
 	
-	return chart;
+	return slices;
 };
 
 

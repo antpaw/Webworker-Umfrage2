@@ -245,7 +245,6 @@ var visualizeForm = new Class({
 						},
 						click: this.filterClick.bind(this)
 					});
-				
 			}
 		}
 		else {
